@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes">
+<title>CEN Bible 2.0</title>
+<meta name="theme-color" content="#5b3a29">
+<meta property="og:title" content="CEN Bible 2.0">
+<meta property="og:description" content="한눈에 성경">
+<link rel="manifest" href="manifest.json">
+<style>
+:root{--b:#5b3a29;--b2:#7a5238;--c:#f5efe8;--card:#fffdf9;--line:#eadbcd;--t:#3e2b1f;--soft:#d9b89e;--gold:#b78343;--icon:#f2e5d8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--c);color:var(--t);font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif}
+header{position:sticky;top:0;z-index:10;background:var(--b);color:#fff;padding:16px;text-align:center;font-size:21px;font-weight:900}
+main{padding:14px;max-width:760px;margin:auto}
+.section-title{font-size:22px;font-weight:900;margin:8px 0 10px}
+.test-title{font-size:16px;font-weight:900;color:#5b3a29;margin:18px 0 8px}
+.book-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.book-btn{border:1px solid #d8bfa8;background:#fffdf9;color:#3e2b1f;border-radius:13px;padding:11px 4px;font-weight:800;font-size:13px;min-height:42px;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.book-btn.done{background:#eadbcd;border-color:#b78343}
+.book-btn.long-book{font-size:11px;letter-spacing:-1px;white-space:nowrap;transform:scaleX(.86);padding-left:1px;padding-right:1px}
+@media(max-width:390px){.book-grid{grid-template-columns:repeat(3,1fr)}.book-btn{font-size:12.5px;padding:10px 3px}.book-btn.long-book{font-size:10.5px;letter-spacing:-1.2px;transform:scaleX(.82)}}
+.screen{display:none;position:fixed;inset:0;background:var(--c);z-index:50;overflow:auto}
+.screen.show{display:block}
+.screen-inner{padding:16px;max-width:760px;margin:auto}
+.topbar{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+.back{border:0;background:var(--b);color:white;border-radius:13px;padding:10px 14px;font-weight:900}
+.hero{background:linear-gradient(135deg,#7a5238,#4b2f21);color:#fff;border-radius:22px;padding:22px;margin-bottom:16px;display:grid;grid-template-columns:1fr 1.05fr;gap:18px;align-items:center}
+.hero h1{margin:0 0 6px;font-size:34px;line-height:1.1}
+.hero p{margin:0;font-size:20px;opacity:.95}
+.hero-overview{border-left:1px solid rgba(255,255,255,.55);padding-left:18px;font-size:15px;line-height:1.65}
+.hero-overview strong{display:block;font-size:20px;margin-bottom:8px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.badge{background:#eadbcd;color:#5b3a29;padding:8px 13px;border-radius:999px;font-size:13px;font-weight:900}
+@media(max-width:520px){.hero{grid-template-columns:1fr;gap:14px}.hero-overview{border-left:0;border-top:1px solid rgba(255,255,255,.45);padding-left:0;padding-top:14px}.hero h1{font-size:30px}.hero p{font-size:18px}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:12px;box-shadow:0 3px 9px rgba(0,0,0,.07);display:grid;grid-template-columns:58px 1fr 24px;gap:14px;align-items:center;cursor:pointer}
+.card.large{padding:20px 16px;grid-template-columns:68px 1fr 26px;background:#fffaf3;border-color:#e2c3a5}
+.card.memory{padding:20px 16px;grid-template-columns:68px 1fr 26px;background:#fff7ef;border-left:6px solid var(--gold)}
+.card-icon{width:54px;height:54px;border-radius:50%;background:var(--icon);display:flex;align-items:center;justify-content:center;font-size:25px;color:#6b3f26}
+.large .card-icon,.memory .card-icon{width:64px;height:64px;font-size:30px;background:#efddca}
+.card h2{margin:0 0 5px;color:#6b4631;font-size:18px}
+.large h2,.memory h2{font-size:20px}
+.card p{margin:0;line-height:1.62;font-size:15px}
+.summary{color:#4f3a2e}
+.full{display:none;margin-top:9px;color:#2f2119}
+.card.open .full{display:block}
+.card.open .summary{display:none}
+.chev{font-size:26px;color:#6b3f26;transition:.2s}
+.card.open .chev{transform:rotate(90deg)}
+.hint{font-size:11px;color:#8a6a55;margin-top:7px}
+.divider{display:flex;align-items:center;gap:12px;margin:18px 0 12px;color:#5b3a29;font-weight:900}
+.divider:before,.divider:after{content:"";height:1px;background:#d7bfa9;flex:1}
+.link-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.link-btn{border:0;background:var(--soft);color:#4b2f21;border-radius:14px;padding:13px;font-weight:900}
+.main-btn{width:100%;border:0;background:var(--b);color:#fff;border-radius:16px;padding:15px;font-size:16px;font-weight:900;margin:8px 0 16px}
+.viewer{display:none;position:fixed;inset:0;background:#1f1712;z-index:100;overflow:hidden}
+.viewer.show{display:block}
+.viewer-head{position:absolute;top:0;left:0;right:0;z-index:101;background:rgba(0,0,0,.45);color:#fff;padding:12px;display:flex;justify-content:space-between;align-items:center}
+.viewer-close{border:0;background:#fff;color:#3e2b1f;border-radius:12px;padding:8px 12px;font-weight:900}
+.viewer-body{height:100%;overflow:auto;padding-top:58px;text-align:center}
+.viewer-img{max-width:100%;height:auto;touch-action:pinch-zoom;background:#fff;border-radius:12px}
+.placeholder{background:#fff7ef;border:1px dashed #c7a98e;border-radius:16px;padding:22px;text-align:center;line-height:1.6;color:#6b4631}
+.small{font-size:12px;color:#7a5238;line-height:1.45;margin-top:10px}
+</style>
+</head>
+<body>
+<header>CEN Bible 2.0</header>
+<main>
+  <div class="section-title">성경 각 권</div>
+  <div class="test-title">구약</div>
+  <div id="oldList" class="book-grid"></div>
+  <div class="test-title">신약</div>
+  <div id="newList" class="book-grid"></div>
+</main>
+
+<section id="detail" class="screen">
+  <div class="screen-inner">
+    <div class="topbar"><button class="back" onclick="goBack()">← 뒤로</button><strong>한눈에 성경</strong></div>
+    <div id="detailBody"></div>
+  </div>
+</section>
+
+<section id="viewer" class="viewer">
+  <div class="viewer-head">
+    <strong id="viewerTitle">원본 인포그래픽</strong>
+    <button class="viewer-close" onclick="closeViewer()">닫기</button>
+  </div>
+  <div class="viewer-body" id="viewerBody"></div>
+</section>
+
+<script>
+let books=[],current=null;
+async function init(){
+  try{
+    const r=await fetch('./data/books.json?ver=gospels-v007');
+    const d=await r.json();
+    books=d.books||[];
+    renderList();
+  }catch(e){
+    document.getElementById('oldList').innerHTML='<div class="placeholder">data/books.json을 불러오지 못했습니다.</div>';
+  }
+}
+function renderList(){
+  const btn=b=>{
+    const special=(b.title==='데살로니가전서'||b.title==='데살로니가후서')?' long-book':'';
+    return `<button class="book-btn ${b.subtitle==='상세 데이터 준비 중'?'':'done'}${special}" onclick="openBook('${b.id}')">${b.title}</button>`;
+  };
+  document.getElementById('oldList').innerHTML=books.filter(b=>b.testament==='old').map(btn).join('');
+  document.getElementById('newList').innerHTML=books.filter(b=>b.testament==='new').map(btn).join('');
+}
+function renderCards(list){
+  return (list||[]).map(c=>{
+    const cls=c.type==='large'?'large':(c.type==='memory'?'memory':'');
+    return `<div class="card ${cls}" onclick="toggleCard(this)">
+      <div class="card-icon">${c.icon||'•'}</div>
+      <div>
+        <h2>${c.title}</h2>
+        <p class="summary">${c.summary||c.content}</p>
+        <p class="full">${c.content}</p>
+        <div class="hint">눌러서 펼치기/접기</div>
+      </div>
+      <div class="chev">›</div>
+    </div>`;
+  }).join('');
+}
+function openBook(id){
+  current=books.find(b=>b.id===id);
+  if(!current)return;
+  const r=current.related||{};
+  let extras=(current.extras&&current.extras.length)?`<div class="divider">추가 내용</div>${renderCards(current.extras)}`:'';
+  const related=`<div class="divider">관련 자료</div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-icon">⌁</div>
+      <div>
+        <h2>관련 자료 연결</h2>
+        <p class="summary">성경연대기, 지도, 주요 인물, 한눈에 정리 연결</p>
+        <div class="full">
+          <div class="link-grid">
+            <button class="link-btn" onclick='event.stopPropagation();showRelated("성경연대기",${JSON.stringify(r.timeline||[])})'>성경연대기</button>
+            <button class="link-btn" onclick='event.stopPropagation();showRelated("관련 지도",${JSON.stringify(r.maps||[])})'>관련 지도</button>
+            <button class="link-btn" onclick='event.stopPropagation();showRelated("주요 인물",${JSON.stringify(r.people||[])})'>주요 인물</button>
+            <button class="link-btn" onclick='event.stopPropagation();showRelated("한눈에 정리",${JSON.stringify(r.charts||[])})'>한눈에 정리</button>
+          </div>
+          <p class="small">※ 현재는 연결 프레임입니다.</p>
+        </div>
+        <div class="hint">눌러서 펼치기/접기</div>
+      </div>
+      <div class="chev">›</div>
+    </div>`;
+  document.getElementById('detailBody').innerHTML=`<div class="hero">
+    <div>
+      <h1>${current.title}</h1>
+      <p>${current.subtitle}</p>
+      <div class="badges">
+        <div class="badge">분류 : ${current.category}</div>
+        <div class="badge">장수 : ${current.chapters||'-'}장</div>
+      </div>
+    </div>
+    <div class="hero-overview"><strong>개요</strong>${current.overview||''}</div>
+  </div>
+  ${renderCards(current.cards)}
+  ${extras}
+  ${related}
+  <button class="main-btn" onclick="openOriginal()">원본 인포그래픽 보기</button>`;
+  document.getElementById('detail').classList.add('show');
+  history.pushState({screen:'detail',id},'');
+}
+function toggleCard(el){el.classList.toggle('open')}
+function showRelated(t,items){alert(t+"\\n\\n"+(items.length?items.map(x=>'• '+x).join('\\n'):'연결 자료 없음'))}
+function openOriginal(){
+  if(!current)return;
+  document.getElementById('viewerTitle').innerText=current.title+' 원본 인포그래픽';
+  document.getElementById('viewerBody').innerHTML=`<img class="viewer-img" src="${current.image}" alt="${current.title} 원본" onerror="this.outerHTML='<div class=placeholder>원본 이미지 파일이 아직 없습니다.<br><br>${current.image}<br><br>해당 경로에 이미지를 넣으면 자동 표시됩니다.</div>'">`;
+  document.getElementById('viewer').classList.add('show');
+  history.pushState({screen:'viewer'},'');
+}
+function closeViewer(){document.getElementById('viewer').classList.remove('show')}
+function goBack(){document.getElementById('detail').classList.remove('show')}
+window.onpopstate=function(){
+  if(document.getElementById('viewer').classList.contains('show')){closeViewer();return}
+  if(document.getElementById('detail').classList.contains('show')){goBack();return}
+};
+if('serviceWorker'in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}))
+}
+init();
+</script>
+</body>
+</html>

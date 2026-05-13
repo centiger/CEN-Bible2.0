@@ -1,0 +1,662 @@
+[
+  {
+    "id": "genesis",
+    "title": "창세기",
+    "testament": "old",
+    "order": 1,
+    "image": "assets/bible-overview/books/genesis.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "exodus",
+    "title": "출애굽기",
+    "testament": "old",
+    "order": 2,
+    "image": "assets/bible-overview/books/exodus.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "leviticus",
+    "title": "레위기",
+    "testament": "old",
+    "order": 3,
+    "image": "assets/bible-overview/books/leviticus.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "numbers",
+    "title": "민수기",
+    "testament": "old",
+    "order": 4,
+    "image": "assets/bible-overview/books/numbers.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "deuteronomy",
+    "title": "신명기",
+    "testament": "old",
+    "order": 5,
+    "image": "assets/bible-overview/books/deuteronomy.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "joshua",
+    "title": "여호수아",
+    "testament": "old",
+    "order": 6,
+    "image": "assets/bible-overview/books/joshua.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "judges",
+    "title": "사사기",
+    "testament": "old",
+    "order": 7,
+    "image": "assets/bible-overview/books/judges.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "ruth",
+    "title": "룻기",
+    "testament": "old",
+    "order": 8,
+    "image": "assets/bible-overview/books/ruth.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "1samuel",
+    "title": "사무엘상",
+    "testament": "old",
+    "order": 9,
+    "image": "assets/bible-overview/books/1samuel.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "2samuel",
+    "title": "사무엘하",
+    "testament": "old",
+    "order": 10,
+    "image": "assets/bible-overview/books/2samuel.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "1kings",
+    "title": "열왕기상",
+    "testament": "old",
+    "order": 11,
+    "image": "assets/bible-overview/books/1kings.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "2kings",
+    "title": "열왕기하",
+    "testament": "old",
+    "order": 12,
+    "image": "assets/bible-overview/books/2kings.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "1chronicles",
+    "title": "역대상",
+    "testament": "old",
+    "order": 13,
+    "image": "assets/bible-overview/books/1chronicles.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "2chronicles",
+    "title": "역대하",
+    "testament": "old",
+    "order": 14,
+    "image": "assets/bible-overview/books/2chronicles.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "ezra",
+    "title": "에스라",
+    "testament": "old",
+    "order": 15,
+    "image": "assets/bible-overview/books/ezra.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "nehemiah",
+    "title": "느헤미야",
+    "testament": "old",
+    "order": 16,
+    "image": "assets/bible-overview/books/nehemiah.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "esther",
+    "title": "에스더",
+    "testament": "old",
+    "order": 17,
+    "image": "assets/bible-overview/books/esther.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "job",
+    "title": "욥기",
+    "testament": "old",
+    "order": 18,
+    "image": "assets/bible-overview/books/job.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "psalms",
+    "title": "시편",
+    "testament": "old",
+    "order": 19,
+    "image": "assets/bible-overview/books/psalms.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "proverbs",
+    "title": "잠언",
+    "testament": "old",
+    "order": 20,
+    "image": "assets/bible-overview/books/proverbs.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "ecclesiastes",
+    "title": "전도서",
+    "testament": "old",
+    "order": 21,
+    "image": "assets/bible-overview/books/ecclesiastes.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "song-of-songs",
+    "title": "아가",
+    "testament": "old",
+    "order": 22,
+    "image": "assets/bible-overview/books/song-of-songs.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "isaiah",
+    "title": "이사야",
+    "testament": "old",
+    "order": 23,
+    "image": "assets/bible-overview/books/isaiah.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "jeremiah",
+    "title": "예레미야",
+    "testament": "old",
+    "order": 24,
+    "image": "assets/bible-overview/books/jeremiah.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "lamentations",
+    "title": "예레미야애가",
+    "testament": "old",
+    "order": 25,
+    "image": "assets/bible-overview/books/lamentations.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "ezekiel",
+    "title": "에스겔",
+    "testament": "old",
+    "order": 26,
+    "image": "assets/bible-overview/books/ezekiel.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "daniel",
+    "title": "다니엘",
+    "testament": "old",
+    "order": 27,
+    "image": "assets/bible-overview/books/daniel.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "hosea",
+    "title": "호세아",
+    "testament": "old",
+    "order": 28,
+    "image": "assets/bible-overview/books/hosea.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "joel",
+    "title": "요엘",
+    "testament": "old",
+    "order": 29,
+    "image": "assets/bible-overview/books/joel.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "amos",
+    "title": "아모스",
+    "testament": "old",
+    "order": 30,
+    "image": "assets/bible-overview/books/amos.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "obadiah",
+    "title": "오바댜",
+    "testament": "old",
+    "order": 31,
+    "image": "assets/bible-overview/books/obadiah.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "jonah",
+    "title": "요나",
+    "testament": "old",
+    "order": 32,
+    "image": "assets/bible-overview/books/jonah.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "micah",
+    "title": "미가",
+    "testament": "old",
+    "order": 33,
+    "image": "assets/bible-overview/books/micah.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "nahum",
+    "title": "나훔",
+    "testament": "old",
+    "order": 34,
+    "image": "assets/bible-overview/books/nahum.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "habakkuk",
+    "title": "하박국",
+    "testament": "old",
+    "order": 35,
+    "image": "assets/bible-overview/books/habakkuk.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "zephaniah",
+    "title": "스바냐",
+    "testament": "old",
+    "order": 36,
+    "image": "assets/bible-overview/books/zephaniah.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "haggai",
+    "title": "학개",
+    "testament": "old",
+    "order": 37,
+    "image": "assets/bible-overview/books/haggai.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "zechariah",
+    "title": "스가랴",
+    "testament": "old",
+    "order": 38,
+    "image": "assets/bible-overview/books/zechariah.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "malachi",
+    "title": "말라기",
+    "testament": "old",
+    "order": 39,
+    "image": "assets/bible-overview/books/malachi.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "matthew",
+    "title": "마태복음",
+    "testament": "new",
+    "order": 40,
+    "image": "assets/bible-overview/books/matthew.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "mark",
+    "title": "마가복음",
+    "testament": "new",
+    "order": 41,
+    "image": "assets/bible-overview/books/mark.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "luke",
+    "title": "누가복음",
+    "testament": "new",
+    "order": 42,
+    "image": "assets/bible-overview/books/luke.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "john",
+    "title": "요한복음",
+    "testament": "new",
+    "order": 43,
+    "image": "assets/bible-overview/books/john.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "acts",
+    "title": "사도행전",
+    "testament": "new",
+    "order": 44,
+    "image": "assets/bible-overview/books/acts.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "romans",
+    "title": "로마서",
+    "testament": "new",
+    "order": 45,
+    "image": "assets/bible-overview/books/romans.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "1corinthians",
+    "title": "고린도전서",
+    "testament": "new",
+    "order": 46,
+    "image": "assets/bible-overview/books/1corinthians.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "2corinthians",
+    "title": "고린도후서",
+    "testament": "new",
+    "order": 47,
+    "image": "assets/bible-overview/books/2corinthians.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "galatians",
+    "title": "갈라디아서",
+    "testament": "new",
+    "order": 48,
+    "image": "assets/bible-overview/books/galatians.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "ephesians",
+    "title": "에베소서",
+    "testament": "new",
+    "order": 49,
+    "image": "assets/bible-overview/books/ephesians.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "philippians",
+    "title": "빌립보서",
+    "testament": "new",
+    "order": 50,
+    "image": "assets/bible-overview/books/philippians.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "colossians",
+    "title": "골로새서",
+    "testament": "new",
+    "order": 51,
+    "image": "assets/bible-overview/books/colossians.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "1thessalonians",
+    "title": "데살로니가전서",
+    "testament": "new",
+    "order": 52,
+    "image": "assets/bible-overview/books/1thessalonians.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "2thessalonians",
+    "title": "데살로니가후서",
+    "testament": "new",
+    "order": 53,
+    "image": "assets/bible-overview/books/2thessalonians.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "1timothy",
+    "title": "디모데전서",
+    "testament": "new",
+    "order": 54,
+    "image": "assets/bible-overview/books/1timothy.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "2timothy",
+    "title": "디모데후서",
+    "testament": "new",
+    "order": 55,
+    "image": "assets/bible-overview/books/2timothy.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "titus",
+    "title": "디도서",
+    "testament": "new",
+    "order": 56,
+    "image": "assets/bible-overview/books/titus.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "philemon",
+    "title": "빌레몬서",
+    "testament": "new",
+    "order": 57,
+    "image": "assets/bible-overview/books/philemon.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "hebrews",
+    "title": "히브리서",
+    "testament": "new",
+    "order": 58,
+    "image": "assets/bible-overview/books/hebrews.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "james",
+    "title": "야고보서",
+    "testament": "new",
+    "order": 59,
+    "image": "assets/bible-overview/books/james.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "1peter",
+    "title": "베드로전서",
+    "testament": "new",
+    "order": 60,
+    "image": "assets/bible-overview/books/1peter.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "2peter",
+    "title": "베드로후서",
+    "testament": "new",
+    "order": 61,
+    "image": "assets/bible-overview/books/2peter.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "1john",
+    "title": "요한일서",
+    "testament": "new",
+    "order": 62,
+    "image": "assets/bible-overview/books/1john.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "2john",
+    "title": "요한이서",
+    "testament": "new",
+    "order": 63,
+    "image": "assets/bible-overview/books/2john.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "3john",
+    "title": "요한삼서",
+    "testament": "new",
+    "order": 64,
+    "image": "assets/bible-overview/books/3john.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "jude",
+    "title": "유다서",
+    "testament": "new",
+    "order": 65,
+    "image": "assets/bible-overview/books/jude.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  },
+  {
+    "id": "revelation",
+    "title": "요한계시록",
+    "testament": "new",
+    "order": 66,
+    "image": "assets/bible-overview/books/revelation.webp",
+    "category": "bible_books",
+    "categoryLabel": "성경 각 권",
+    "type": "infographic"
+  }
+]
