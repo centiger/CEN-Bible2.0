@@ -1,0 +1,19 @@
+원본 인포그래픽 파일명 안내
+
+이번 버전은 아래 형식을 우선 사용합니다.
+
+경로:
+assets/bible-overview/books/
+
+파일명:
+01_genesis.webp
+02_exodus.webp
+03_leviticus.webp
+...
+66_revelation.webp
+
+즉, '두자리숫자_영문성경명.webp' 형식입니다.
+
+주의:
+overview66/index.html 안에서 실행되므로 앱은 내부적으로 ../assets/bible-overview/books/01_genesis.webp 경로도 함께 탐색합니다.
+GitHub에는 assets/bible-overview/books/ 폴더 안에 원본 webp 파일들을 업로드하면 됩니다.

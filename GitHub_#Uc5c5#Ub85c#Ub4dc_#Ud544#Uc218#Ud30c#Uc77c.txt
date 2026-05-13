@@ -1,0 +1,17 @@
+이번 수정 반영을 위해 GitHub에 반드시 덮어쓰기 업로드할 파일
+
+필수:
+1. overview66/index.html
+2. overview66/data/books.json
+3. overview66/service-worker.js
+4. data/books.json
+5. service-worker.js
+
+로딩 최적화 구조 유지:
+6. data/compressed 폴더 전체
+
+수정 내용:
+- 하나님과의 관계 아이콘을 세로형 성경책 아이콘(📘)으로 변경
+- 아이콘 크기를 원 안에 충분히 들어가도록 축소
+- 원본 인포그래픽 보기 버튼 실행 오류를 안전형 코드로 수정
+- 원본 인포그래픽 보기 화면은 내부 상단바 없이 전체 화면으로 표시
