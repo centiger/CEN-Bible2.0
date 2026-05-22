@@ -2197,7 +2197,7 @@ body.scoreViewerOpen{
 
 
 <style id="cen-soft-overview-color-tune">
-/* CEN Bible 2.0 - 한눈에 성경 / 한눈에 성경 색상 톤다운: 메인 화면과 통일 */
+/* CEN Bible 2.0 - 한눈에 성경 / 성경 각 권 색상 톤다운: 메인 화면과 통일 */
 #bookOverviewPanel .panel,
 #bookOverviewPanel .overviewPanel{
   background:#fbf6ee !important;
@@ -2486,7 +2486,7 @@ body.scoreViewerOpen{
       <div class="bibleUnderstandingGroup collapsed">
         <button class="bibleGroupToggle" type="button" onclick="toggleBibleGroup(event, 'structureFlowGroup')">구조와 흐름</button>
         <div id="structureFlowGroup" class="bibleGroupButtons">
-          <button class="menu-btn bible-understanding-btn" onclick="openBookOverviewMenu(event)">한눈에 성경</button>
+          <button class="menu-btn bible-understanding-btn" onclick="openOverview66Module(event)">한눈에 성경</button>
           <button class="menu-btn bible-understanding-btn" onclick="openChronologyMenu(event)">성경연대기</button>
           <button class="menu-btn bible-understanding-btn" onclick="openConnectionExploreMenu(event)">연결탐험</button>
           <button class="menu-btn bible-understanding-btn" onclick="openBibleSummaryMenu(event)">한눈에 정리</button>
@@ -9062,14 +9062,14 @@ let cenOverviewBooks = CEN_OVERVIEW_FALLBACK.slice();
 let cenOverviewFilter = 'all';
 let cenOverviewLoaded = false;
 const CEN_OVERVIEW_CATEGORY_LABELS = {
-  bible_books:'한눈에 성경',
+  bible_books:'성경 각 권',
   chronology:'성경연대기',
   summary:'한눈에 정리',
   tabernacle_temple:'성막·성전',
   feasts_sacrifices:'절기·제사'
 };
 const CEN_OVERVIEW_CATEGORIES = [
-  {key:'bible_books', label:'한눈에 성경', icon:'▣', desc:'한눈에 성경의 개요와 핵심 내용을 한눈에 확인'},
+  {key:'bible_books', label:'성경 각 권', icon:'▣', desc:'성경 각 권의 개요와 핵심 내용을 한눈에 확인'},
   {key:'chronology', label:'성경연대기', icon:'⌁', desc:'창조부터 초대교회까지 시간의 흐름으로 정리'},
   {key:'summary', label:'한눈에 정리', icon:'표', desc:'왕조·선지자·인물·주제를 비교표로 쉽게 정리'},
   {key:'tabernacle_temple', label:'성막·성전', icon:'⌂', desc:'성막과 성전의 구조와 기구를 시각적으로 이해'},
@@ -9256,9 +9256,8 @@ function showOverviewImagePlaceholder(img){
     const panel = document.getElementById('overview66FramePanel');
     if(panel) panel.classList.remove('show');
     try{
-      const p = document.getElementById('bookOverviewPanel');
-      if(p){ p.classList.add('show'); p.style.display='flex'; }
-      if(typeof showOverviewHome === 'function') showOverviewHome();
+      const frame = document.getElementById('overview66Frame');
+      if(frame) frame.src = 'about:blank';
     }catch(_e){}
   };
 
