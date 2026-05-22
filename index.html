@@ -2021,10 +2021,11 @@ body.scoreViewerOpen{
 .bibleGroupToggle{
   width:100%;
   min-height:36px;
-  border:1px solid rgba(93,64,43,.28);
+  border:1px solid rgba(105,75,49,.34);
   border-radius:12px;
-  background:rgba(111,78,55,.12);
-  color:#4f3527;
+  background:linear-gradient(180deg, #eadbc8 0%, #dcc5aa 100%);
+  color:#4d3526;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35);
   font-size:13px;
   font-weight:700;
   text-align:left;
@@ -2037,6 +2038,11 @@ body.scoreViewerOpen{
   opacity:.75;
   margin-top:1px;
 }
+
+.bibleGroupToggle:active{
+  background:linear-gradient(180deg, #d8bea0 0%, #c8aa86 100%);
+}
+
 .bibleUnderstandingGroup.collapsed .bibleGroupToggle::after{
   content:"▸";
 }
