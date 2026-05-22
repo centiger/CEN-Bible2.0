@@ -2140,7 +2140,8 @@ body.scoreViewerOpen{
 #bookOverviewPanel .overviewHead{flex:0 0 auto !important;}
 #bookOverviewPanel .overviewToolbar{display:flex; flex-direction:column; gap:8px; margin:8px 0 10px; flex:0 0 auto;}
 #bookOverviewPanel .overviewTabs{display:flex; flex-wrap:wrap; gap:6px;}
-#bookOverviewPanel .overviewTab{height:34px; min-width:72px; flex:1 1 auto; padding:0 10px; border:1px solid #ded0bd; border-radius:10px; background:rgba(245,238,226,.65); color:#70583a; font-size:13px; font-weight:800;}
+#bookOverviewPanel .overviewTab{
+  letter-spacing:-0.02em;height:34px; min-width:72px; flex:1 1 auto; padding:0 10px; border:1px solid #ded0bd; border-radius:10px; background:rgba(245,238,226,.65); color:#70583a; font-size:13px; font-weight:800;}
 #bookOverviewPanel .overviewTab.active{background:#70583a; color:#fff; border-color:#70583a;}
 #bookOverviewPanel .overviewSearch{height:38px; border:1px solid #ded0bd; border-radius:11px; padding:0 12px; font-size:14px; background:#fffaf3; color:#4b3725; box-sizing:border-box;}
 #bookOverviewPanel .overviewBookList{overflow:auto; padding:2px 2px 12px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px;}
@@ -2306,7 +2307,7 @@ body.scoreViewerOpen{
 <div id="selectToolbar">
 <input type="color" id="highlightPicker" value="#fff176" style="display:none"><span id="selectCount">0절 선택</span><button onclick="copySelected(event)">복사</button><button onclick="addMemoToSelected(event)">메모추가</button><button id="highlightBtn" onclick="openHighlightPicker(event)" style="background:#fff176;color:#000;border:1px solid #d9c5aa;">형광펜</button><button onclick="removeHighlightFromSelected(event)">해제</button><button onclick="clearSelection(event)">취소</button></div>
 
-<div id="bookModal" class="modal"><div class="panel"><div class="panelHead"><h3>성경 선택</h3><button class="xbtn" onclick="closeModal('bookModal')">×</button></div><h4>구약</h4><div id="otBooks" class="bookGrid"></div><h4>신약</h4><div id="ntBooks" class="bookGrid"></div></div></div>
+<div id="bookModal" class="modal"><div class="panel"><div class="panelHead"><h3>성경 선택</h3><button class="xbtn" onclick="closeModal('bookModal')">×</button></div><h4>📖 구약</h4><div id="otBooks" class="bookGrid"></div><h4>📖 신약</h4><div id="ntBooks" class="bookGrid"></div></div></div>
 <div id="chapterModal" class="modal"><div class="panel"><div class="panelHead"><h3>장 선택</h3><button class="xbtn" onclick="closeModal('chapterModal')">×</button></div><div id="chapters" class="chapGrid"></div></div></div>
 <div id="versionModal" class="modal"><div class="panel"><div class="panelHead"><h3>번역본</h3><button class="xbtn" onclick="closeModal('versionModal')">×</button></div><div id="versions" class="versionList"></div></div></div>
 <div id="searchPanel" class="modal"><div class="panel"><div class="panelHead"><h3>성경 검색</h3><button class="xbtn" onclick="closeModal('searchPanel')">×</button></div><input id="searchInput" placeholder="검색어 입력"><div class="settingBtns"><button class="colored" onclick="searchBible()">검색</button><button onclick="clearBibleSearch()">검색초기화</button></div><div id="searchResult"></div></div></div>
@@ -3403,7 +3404,7 @@ function showPlanAll() {
 }
 function showPlanBook(initialBook) {
   document.getElementById('planAllBtn').classList.remove('active'); document.getElementById('planBookBtn').classList.add('active');
-  let html=`<div class="testamentBtns"><button onclick="toggleOnlyTestament('otList')">구약</button><button onclick="toggleOnlyTestament('ntList')">신약</button></div><div id="otList" class="inlineList">${OT.map(b=>`<button onclick="chooseBookPlan('${b}')">${b}</button>`).join('')}</div><div id="ntList" class="inlineList">${NT.map(b=>`<button onclick="chooseBookPlan('${b}')">${b}</button>`).join('')}</div><div id="bookPlanArea"></div>`;
+  let html=`<div class="testamentBtns"><button onclick="toggleOnlyTestament('otList')">📖 구약</button><button onclick="toggleOnlyTestament('ntList')">📖 신약</button></div><div id="otList" class="inlineList">${OT.map(b=>`<button onclick="chooseBookPlan('${b}')">${b}</button>`).join('')}</div><div id="ntList" class="inlineList">${NT.map(b=>`<button onclick="chooseBookPlan('${b}')">${b}</button>`).join('')}</div><div id="bookPlanArea"></div>`;
   document.getElementById('planContent').innerHTML=html;
   if(initialBook) renderBookPlan(initialBook);
 }
@@ -5100,7 +5101,7 @@ function resetMemoSearch(){
     const topReset = document.getElementById('planTopResetBtn') || document.querySelector('.planResetMain');
     if(topReset) topReset.style.display = 'none';
 
-    let html = `<div class="testamentBtns"><button onclick="toggleTestamentList('otList')">구약</button><button onclick="toggleTestamentList('ntList')">신약</button></div><div id="otList" class="inlineList"></div><div id="ntList" class="inlineList"></div><div id="bookPlanArea"></div>`;
+    let html = `<div class="testamentBtns"><button onclick="toggleTestamentList('otList')">📖 구약</button><button onclick="toggleTestamentList('ntList')">📖 신약</button></div><div id="otList" class="inlineList"></div><div id="ntList" class="inlineList"></div><div id="bookPlanArea"></div>`;
     const pc = document.getElementById('planContent');
     if(pc) pc.innerHTML = html;
 
@@ -5420,7 +5421,7 @@ function resetMemoSearch(){
 
     const pc=document.getElementById('planContent');
     if(!pc) return;
-    pc.innerHTML = `<div class="testamentBtns"><button type="button" onclick="toggleTestamentList('otList')">구약</button><button type="button" onclick="toggleTestamentList('ntList')">신약</button></div><div id="otList" class="inlineList"></div><div id="ntList" class="inlineList"></div><div id="bookPlanArea"></div>`;
+    pc.innerHTML = `<div class="testamentBtns"><button type="button" onclick="toggleTestamentList('otList')">📖 구약</button><button type="button" onclick="toggleTestamentList('ntList')">📖 신약</button></div><div id="otList" class="inlineList"></div><div id="ntList" class="inlineList"></div><div id="bookPlanArea"></div>`;
     const ot=document.getElementById('otList');
     const nt=document.getElementById('ntList');
     if(ot) OT.forEach(function(b){ const btn=document.createElement('button'); btn.textContent=b; btn.onclick=function(){ renderBookPlan(b); }; ot.appendChild(btn); });
