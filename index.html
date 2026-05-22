@@ -2197,7 +2197,7 @@ body.scoreViewerOpen{
 
 
 <style id="cen-soft-overview-color-tune">
-/* CEN Bible 2.0 - 한눈에 성경 / 성경 각 권 색상 톤다운: 메인 화면과 통일 */
+/* CEN Bible 2.0 - 한눈에 성경 / 한눈에 성경 색상 톤다운: 메인 화면과 통일 */
 #bookOverviewPanel .panel,
 #bookOverviewPanel .overviewPanel{
   background:#fbf6ee !important;
@@ -2547,7 +2547,7 @@ body.scoreViewerOpen{
     </div>
     <div id="overviewCategoryHome" class="overviewCategoryHome" aria-label="한눈에 성경 하부 메뉴"></div>
     <div class="overviewToolbar" hidden>
-      <div class="overviewListTitle" id="overviewListTitle">성경 각 권</div>
+      <div class="overviewListTitle" id="overviewListTitle">한눈에 성경</div>
       <button type="button" class="overviewHomeBtn" onclick="showOverviewHome()">← 한눈에 성경 메뉴</button>
       <input id="overviewSearch" class="overviewSearch" type="search" placeholder="자료 검색" oninput="renderOverviewBookList()" />
     </div>
@@ -9062,14 +9062,14 @@ let cenOverviewBooks = CEN_OVERVIEW_FALLBACK.slice();
 let cenOverviewFilter = 'all';
 let cenOverviewLoaded = false;
 const CEN_OVERVIEW_CATEGORY_LABELS = {
-  bible_books:'성경 각 권',
+  bible_books:'한눈에 성경',
   chronology:'성경연대기',
   summary:'한눈에 정리',
   tabernacle_temple:'성막·성전',
   feasts_sacrifices:'절기·제사'
 };
 const CEN_OVERVIEW_CATEGORIES = [
-  {key:'bible_books', label:'성경 각 권', icon:'▣', desc:'성경 각 권의 개요와 핵심 내용을 한눈에 확인'},
+  {key:'bible_books', label:'한눈에 성경', icon:'▣', desc:'한눈에 성경의 개요와 핵심 내용을 한눈에 확인'},
   {key:'chronology', label:'성경연대기', icon:'⌁', desc:'창조부터 초대교회까지 시간의 흐름으로 정리'},
   {key:'summary', label:'한눈에 정리', icon:'표', desc:'왕조·선지자·인물·주제를 비교표로 쉽게 정리'},
   {key:'tabernacle_temple', label:'성막·성전', icon:'⌂', desc:'성막과 성전의 구조와 기구를 시각적으로 이해'},
@@ -9218,13 +9218,13 @@ function showOverviewImagePlaceholder(img){
 
 
 
-<div id="overview66FramePanel" aria-label="성경 각 권 한눈에 보기">
+<div id="overview66FramePanel" aria-label="한눈에 성경">
   <div id="overview66FrameTop">
     <button type="button" onclick="closeOverview66Module(event)">← 한눈에 성경</button>
-    <strong>성경 각 권 한눈에 보기</strong>
+    <strong>한눈에 성경</strong>
     <button type="button" onclick="closeOverview66Module(event)">닫기</button>
   </div>
-  <iframe id="overview66Frame" title="성경 각 권 한눈에 보기"></iframe>
+  <iframe id="overview66Frame" title="한눈에 성경"></iframe>
 </div>
 
 
