@@ -2001,43 +2001,80 @@ body.scoreViewerOpen{
 
 <style>
 
-/* CEN Bible 2.0 - 성경의 이해 허브 구조 */
-.bibleUnderstandingHubRow{
+/* CEN Bible 2.0 - 성경의 이해 우측 접이식 허브 구조 */
+.bibleUnderstandingCompactHub{
+  align-items:flex-start;
+}
+.bibleUnderstandingCompactHub>label{
+  padding-top:8px;
+  white-space:nowrap;
+}
+.bibleUnderstandingGroups{
+  flex:1;
   display:flex;
   flex-direction:column;
-  align-items:stretch;
-  gap:12px;
+  gap:7px;
 }
-.bibleUnderstandingHubRow>label{
+.bibleUnderstandingGroup{
+  width:100%;
+}
+.bibleGroupToggle{
+  width:100%;
+  min-height:36px;
+  border:1px solid rgba(93,64,43,.28);
+  border-radius:12px;
+  background:rgba(111,78,55,.12);
+  color:#4f3527;
+  font-size:13px;
   font-weight:700;
-  margin-bottom:2px;
+  text-align:left;
+  padding:7px 11px;
 }
-.bibleHubSection{
-  background:rgba(86,61,42,.16);
-  border:1px solid rgba(110,78,54,.25);
-  border-radius:14px;
-  padding:12px;
-}
-.bibleHubTitle{
-  font-size:15px;
-  font-weight:700;
-  color:#5c3d2b;
-  margin-bottom:4px;
-}
-.bibleHubDesc{
+.bibleGroupToggle::after{
+  content:"▾";
+  float:right;
   font-size:11px;
-  color:#6e655d;
-  margin-bottom:10px;
+  opacity:.75;
+  margin-top:1px;
 }
-.bibleHubBtns{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
+.bibleUnderstandingGroup.collapsed .bibleGroupToggle::after{
+  content:"▸";
 }
-.bibleHubBtns .menu-btn{
-  flex:1 1 calc(50% - 8px);
-  min-width:120px;
+.bibleGroupButtons{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:6px;
+  padding:7px 2px 1px;
 }
+.bibleUnderstandingGroup.collapsed .bibleGroupButtons{
+  display:none;
+}
+.bibleGroupButtons .menu-btn,
+.bibleGroupButtons .bible-understanding-btn{
+  width:100%;
+  min-height:34px;
+  font-size:12px;
+  font-weight:700;
+  border-radius:11px;
+  padding:6px 5px;
+  letter-spacing:-.03em;
+}
+@media (max-width:380px){
+  .bibleUnderstandingCompactHub{
+    gap:8px;
+  }
+  .bibleGroupButtons{
+    grid-template-columns:1fr 1fr;
+    gap:5px;
+  }
+  .bibleGroupButtons .menu-btn,
+  .bibleGroupButtons .bible-understanding-btn{
+    font-size:11px;
+    min-height:33px;
+    padding:5px 3px;
+  }
+}
+/* END CEN Bible 2.0 compact hub */
 
 /* CEN Bible 2.0: 성경의 이해 섹션 */
 .bible-understanding-btn{padding:10px 18px !important; min-width:auto !important; width:auto !important; display:inline-flex !important; justify-content:center !important;}
@@ -2435,39 +2472,41 @@ body.scoreViewerOpen{
       <button class="menu-btn" onclick="openMemoList(event)">메모</button><button class="menu-btn" onclick="openSavedSearch(event)">통합검색</button>
     </div>
   </div>
-  <div class="settingControlRow bibleUnderstandingHubRow">
+
+  <div class="settingControlRow bibleUnderstandingInlineRow bibleUnderstandingCompactHub">
     <label>성경의 이해</label>
+    <div class="bibleUnderstandingGroups">
 
-    <div class="bibleHubSection">
-      <div class="bibleHubTitle">1. 구조와 흐름</div>
-      <div class="bibleHubDesc">성경 전체의 흐름과 연결 이해</div>
-      <div class="bibleHubBtns">
-        <button class="menu-btn bible-understanding-btn" onclick="openBookOverviewMenu(event)">한눈에 성경</button>
-        <button class="menu-btn bible-understanding-btn" onclick="openChronologyMenu(event)">성경연대기</button>
-        <button class="menu-btn bible-understanding-btn" onclick="openConnectionExploreMenu(event)">연결탐험</button>
-        <button class="menu-btn bible-understanding-btn" onclick="openBibleSummaryMenu(event)">한눈에 정리</button>
+      <div class="bibleUnderstandingGroup">
+        <button class="bibleGroupToggle" type="button" onclick="toggleBibleGroup(event, 'structureFlowGroup')">구조와 흐름</button>
+        <div id="structureFlowGroup" class="bibleGroupButtons">
+          <button class="menu-btn bible-understanding-btn" onclick="openBookOverviewMenu(event)">한눈에 성경</button>
+          <button class="menu-btn bible-understanding-btn" onclick="openChronologyMenu(event)">성경연대기</button>
+          <button class="menu-btn bible-understanding-btn" onclick="openConnectionExploreMenu(event)">연결탐험</button>
+          <button class="menu-btn bible-understanding-btn" onclick="openBibleSummaryMenu(event)">한눈에 정리</button>
+        </div>
       </div>
-    </div>
 
-    <div class="bibleHubSection">
-      <div class="bibleHubTitle">2. 역사와 배경</div>
-      <div class="bibleHubDesc">시대·지리·생활문화 이해</div>
-      <div class="bibleHubBtns">
-        <button class="menu-btn bible-understanding-btn" onclick="openBibleMapMenu(event)">성경지도</button>
-        <button class="menu-btn bible-understanding-btn" onclick="openBibleUnitMenu(event)">성경단위</button>
+      <div class="bibleUnderstandingGroup">
+        <button class="bibleGroupToggle" type="button" onclick="toggleBibleGroup(event, 'historyBackgroundGroup')">역사와 배경</button>
+        <div id="historyBackgroundGroup" class="bibleGroupButtons">
+          <button class="menu-btn bible-understanding-btn" onclick="openBibleMapMenu(event)">성경지도</button>
+          <button class="menu-btn bible-understanding-btn" onclick="openBibleUnitMenu(event)">성경단위</button>
+        </div>
       </div>
-    </div>
 
-    <div class="bibleHubSection">
-      <div class="bibleHubTitle">3. 예배와 상징</div>
-      <div class="bibleHubDesc">예배와 제도의 상징 이해</div>
-      <div class="bibleHubBtns">
-        <button class="menu-btn bible-understanding-btn" onclick="openTabernacleTempleMenu(event)">성막성전</button>
-        <button class="menu-btn bible-understanding-btn" onclick="openFestivalSacrificeMenu(event)">절기제사</button>
+      <div class="bibleUnderstandingGroup">
+        <button class="bibleGroupToggle" type="button" onclick="toggleBibleGroup(event, 'worshipSymbolGroup')">예배와 상징</button>
+        <div id="worshipSymbolGroup" class="bibleGroupButtons">
+          <button class="menu-btn bible-understanding-btn" onclick="openTabernacleTempleMenu(event)">성막성전</button>
+          <button class="menu-btn bible-understanding-btn" onclick="openFestivalSacrificeMenu(event)">절기제사</button>
+        </div>
       </div>
+
     </div>
   </div>
-  <div class="settingControlRow worshipInlineRow">
+
+<div class="settingControlRow worshipInlineRow">
     <label>예배용 세트</label>
     <div class="worshipBtns">
       <button class="menu-btn" onclick="openHymnFromSettings()">찬송가</button>
@@ -8984,19 +9023,29 @@ function resetMemoSearch(){
 
 <script>
 
+function toggleBibleGroup(event, groupId){
+  if(event) event.stopPropagation();
+  const group = document.getElementById(groupId)?.closest('.bibleUnderstandingGroup');
+  if(group) group.classList.toggle('collapsed');
+}
 function openChronologyMenu(event){
+  if(event) event.stopPropagation();
   alert('성경연대기 PWA 연결 예정');
 }
 function openConnectionExploreMenu(event){
+  if(event) event.stopPropagation();
   alert('연결탐험 PWA 연결 예정');
 }
 function openBibleSummaryMenu(event){
+  if(event) event.stopPropagation();
   alert('한눈에 정리 PWA 개발 예정');
 }
 function openTabernacleTempleMenu(event){
+  if(event) event.stopPropagation();
   alert('성막성전 PWA 개발 예정');
 }
 function openFestivalSacrificeMenu(event){
+  if(event) event.stopPropagation();
   alert('절기제사 PWA 개발 예정');
 }
 
