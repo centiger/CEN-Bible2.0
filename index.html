@@ -9290,6 +9290,82 @@ function showOverviewImagePlaceholder(img){
 })();
 </script>
 
+
+<script id="cen-bible2-hash-router">
+(function(){
+  function runWhenReady(fn, tries){
+    tries = tries || 0;
+    try {
+      const content = document.getElementById('content');
+      if(document.readyState !== 'loading' && content){
+        fn();
+        return;
+      }
+    } catch(e){}
+    if(tries > 80) return;
+    setTimeout(function(){ runWhenReady(fn, tries + 1); }, 120);
+  }
+
+  function openOverviewHome(){
+    try{
+      if(typeof openBookOverviewMenu === 'function'){
+        openBookOverviewMenu({stopPropagation:function(){}});
+        return true;
+      }
+    }catch(e){}
+    return false;
+  }
+
+  function openOverview66(){
+    try{
+      if(typeof openOverview66Module === 'function'){
+        openOverview66Module({stopPropagation:function(){}});
+        return true;
+      }
+    }catch(e){}
+    if(openOverviewHome()){
+      setTimeout(function(){
+        try{
+          if(typeof openOverviewCategory === 'function') openOverviewCategory('bible_books');
+        }catch(e){}
+      }, 250);
+      return true;
+    }
+    return false;
+  }
+
+  function openCoreEvents(){
+    // 현재 index에는 독립 '핵심사건' 함수가 명확하지 않아 한눈에 성경 허브로 진입시킨다.
+    // 이후 핵심사건 카테고리 key가 확정되면 이 함수에서 바로 해당 카테고리를 열면 된다.
+    return openOverviewHome();
+  }
+
+  function handleHash(){
+    const h = String(location.hash || '').replace('#','').toLowerCase();
+    if(!h) return;
+
+    runWhenReady(function(){
+      if(h === 'overview' || h === 'overview-home' || h === 'bible-overview'){
+        openOverviewHome();
+      }else if(h === 'overview66' || h === 'bible-books' || h === 'books'){
+        openOverview66();
+      }else if(h === 'core-events' || h === 'key-events' || h === 'events'){
+        openCoreEvents();
+      }else if(h === 'chronology'){
+        if(typeof openChronologyMenu === 'function') openChronologyMenu({stopPropagation:function(){}});
+      }else if(h === 'connection' || h === 'explore'){
+        if(typeof openConnectionExploreMenu === 'function') openConnectionExploreMenu({stopPropagation:function(){}});
+      }else if(h === 'matrix' || h === 'summary'){
+        if(typeof openBibleSummaryMenu === 'function') openBibleSummaryMenu({stopPropagation:function(){}});
+      }
+    });
+  }
+
+  window.addEventListener('load', function(){ setTimeout(handleHash, 350); });
+  window.addEventListener('hashchange', handleHash);
+})();
+</script>
+
 </body>
 </html>
 
