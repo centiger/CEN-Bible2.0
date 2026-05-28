@@ -2297,16 +2297,16 @@ body.scoreViewerOpen{
 </style>
 
 
-<style id="cen-stagehub-style">
+<style id="cen-stagehub-style-v2">
 #cenStageHubOverlay{
- position:fixed; inset:0; z-index:5000;
- background:rgba(18,16,12,.72);
+ position:fixed; inset:0; z-index:2147483647;
+ background:rgba(18,16,12,.74);
  display:none; align-items:center; justify-content:center;
  padding:18px;
 }
 #cenStageHubOverlay.show{display:flex}
 .cen-stagehub-panel{
- width:min(92vw,760px);
+ width:min(94vw,760px);
  max-height:88vh; overflow:auto;
  background:linear-gradient(135deg,#fff8e7,#ead5a8 72%,#9a6832);
  border-radius:28px;
@@ -2314,59 +2314,17 @@ body.scoreViewerOpen{
  box-shadow:0 12px 40px rgba(0,0,0,.34);
  padding:20px;
  color:#20160e;
- font-family:system-ui,sans-serif;
+ font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
-.cen-stagehub-head{
- display:flex;justify-content:space-between;align-items:center;
- margin-bottom:14px;
-}
-.cen-stagehub-head h2{
- margin:0;font-size:24px;color:#16213a;
-}
-.cen-stagehub-close{
- width:42px;height:42px;border-radius:14px;border:0;
- background:#5b2d24;color:#fff;font-size:24px;font-weight:900;
-}
-.cen-stagehub-grid{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
- gap:12px;
-}
-.cen-stage-card{
- background:#fffaf0;
- border:1px solid #d2bd96;
- border-radius:22px;
- padding:16px;
- text-decoration:none;
- color:#20160e;
- display:block;
-}
-.cen-stage-card h3{
- margin:0 0 8px;
- color:#16213a;
- font-size:19px;
-}
-.cen-stage-card p{
- margin:0;
- line-height:1.55;
- font-size:13px;
- color:#5b4630;
- font-weight:700;
-}
-.cen-stage-tag{
- display:inline-block;
- margin-top:12px;
- background:#6f4a1f;
- color:#fff5dc;
- border-radius:999px;
- padding:6px 10px;
- font-size:11px;
- font-weight:900;
-}
-.cen-stage-card.coming{
- opacity:.76;
- filter:saturate(.8);
-}
+.cen-stagehub-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.cen-stagehub-head h2{margin:0;font-size:24px;color:#16213a}
+.cen-stagehub-close{width:42px;height:42px;border-radius:14px;border:0;background:#5b2d24;color:#fff;font-size:24px;font-weight:900}
+.cen-stagehub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.cen-stage-card{background:#fffaf0;border:1px solid #d2bd96;border-radius:22px;padding:16px;text-decoration:none;color:#20160e;display:block}
+.cen-stage-card h3{margin:0 0 8px;color:#16213a;font-size:19px}
+.cen-stage-card p{margin:0;line-height:1.55;font-size:13px;color:#5b4630;font-weight:700}
+.cen-stage-tag{display:inline-block;margin-top:12px;background:#6f4a1f;color:#fff5dc;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:900}
+.cen-stage-card.coming{opacity:.76;filter:saturate(.8)}
 </style>
 
 </head>
@@ -9444,22 +9402,19 @@ function showOverviewImagePlaceholder(img){
   <div class="cen-stagehub-panel">
     <div class="cen-stagehub-head">
       <h2>시대별총람</h2>
-      <button class="cen-stagehub-close" onclick="closeStageHub()">×</button>
+      <button class="cen-stagehub-close" type="button" onclick="closeStageHub()">×</button>
     </div>
-
     <div class="cen-stagehub-grid">
       <a class="cen-stage-card" href="https://centiger.github.io/CEN-United-Kingdom-Matrix/">
         <h3>통일왕국 Matrix</h3>
         <p>다윗 · 시온 · 언약궤 · 성전 · 왕국분열까지 이어지는 통일왕국 흐름을 탐험합니다.</p>
         <div class="cen-stage-tag">5허브 통합엔진 연결</div>
       </a>
-
       <a class="cen-stage-card" href="https://centiger.github.io/CEN-Matrix/">
         <h3>분열왕국 Matrix</h3>
         <p>선지자 · 제국 패권 · 왕국 붕괴 · 예루살렘 함락까지 이어지는 시대 흐름을 탐험합니다.</p>
         <div class="cen-stage-tag">분열왕국 허브엔진 연결</div>
       </a>
-
       <div class="cen-stage-card coming">
         <h3>포로·귀환 Matrix</h3>
         <p>바벨론 포로 이후 귀환과 성전 회복, 메시아 대망으로 이어질 흐름입니다.</p>
@@ -9469,33 +9424,41 @@ function showOverviewImagePlaceholder(img){
   </div>
 </div>
 
-<script id="cen-stagehub-script">
+<script id="cen-stagehub-script-v2">
 function openStageHub(){
-  const el=document.getElementById('cenStageHubOverlay');
+  var el=document.getElementById('cenStageHubOverlay');
   if(el) el.classList.add('show');
 }
 function closeStageHub(){
-  const el=document.getElementById('cenStageHubOverlay');
+  var el=document.getElementById('cenStageHubOverlay');
   if(el) el.classList.remove('show');
 }
-
-document.addEventListener('DOMContentLoaded', function(){
-  const targets = Array.from(document.querySelectorAll('button,a,div,span'));
-  targets.forEach(el=>{
-    const txt=(el.innerText||el.textContent||'').trim();
-    if(txt==='시대별총람'){
-      el.style.cursor='pointer';
-      el.addEventListener('click', function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        openStageHub();
-      }, true);
-    }
-  });
-});
-
+function isStageHubTrigger(el){
+  if(!el) return false;
+  var txt=(el.innerText||el.textContent||'').replace(/\s+/g,'').trim();
+  var href=(el.getAttribute&&el.getAttribute('href')||'') + '';
+  var onclick=(el.getAttribute&&el.getAttribute('onclick')||'') + '';
+  return txt.includes('시대별총람') ||
+         href.includes('CEN-Matrix') ||
+         href.includes('CEN-Matrix-main') ||
+         onclick.includes('CEN-Matrix') ||
+         onclick.includes('시대별총람');
+}
 document.addEventListener('click', function(e){
-  const overlay=document.getElementById('cenStageHubOverlay');
+  var el=e.target;
+  while(el && el !== document.body){
+    if(isStageHubTrigger(el)){
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      openStageHub();
+      return false;
+    }
+    el=el.parentElement;
+  }
+}, true);
+document.addEventListener('click', function(e){
+  var overlay=document.getElementById('cenStageHubOverlay');
   if(e.target===overlay) closeStageHub();
 });
 </script>
