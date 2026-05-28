@@ -2297,7 +2297,10 @@ body.scoreViewerOpen{
 </style>
 
 
-<style id="cen-stagehub-style-v2">
+
+
+
+<style id="cen-stagehub-style-v3">
 #cenStageHubOverlay{
  position:fixed; inset:0; z-index:2147483647;
  background:rgba(18,16,12,.74);
@@ -2320,11 +2323,12 @@ body.scoreViewerOpen{
 .cen-stagehub-head h2{margin:0;font-size:24px;color:#16213a}
 .cen-stagehub-close{width:42px;height:42px;border-radius:14px;border:0;background:#5b2d24;color:#fff;font-size:24px;font-weight:900}
 .cen-stagehub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-.cen-stage-card{background:#fffaf0;border:1px solid #d2bd96;border-radius:22px;padding:16px;text-decoration:none;color:#20160e;display:block}
+.cen-stage-card{background:#fffaf0;border:1px solid #d2bd96;border-radius:22px;padding:16px;text-decoration:none;color:#20160e;display:block;text-align:left}
 .cen-stage-card h3{margin:0 0 8px;color:#16213a;font-size:19px}
 .cen-stage-card p{margin:0;line-height:1.55;font-size:13px;color:#5b4630;font-weight:700}
 .cen-stage-tag{display:inline-block;margin-top:12px;background:#6f4a1f;color:#fff5dc;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:900}
-.cen-stage-card.coming{opacity:.76;filter:saturate(.8)}
+.cen-stage-card.ready:hover{filter:brightness(.98);transform:translateY(-1px)}
+.cen-stage-card.coming{opacity:.82;filter:saturate(.8)}
 </style>
 
 </head>
@@ -9398,69 +9402,126 @@ function showOverviewImagePlaceholder(img){
 </script>
 
 
-<div id="cenStageHubOverlay">
-  <div class="cen-stagehub-panel">
+
+<div id="cenStageHubOverlay" aria-hidden="true">
+  <div class="cen-stagehub-panel" role="dialog" aria-modal="true" aria-labelledby="cenStageHubTitle">
     <div class="cen-stagehub-head">
-      <h2>시대별총람</h2>
-      <button class="cen-stagehub-close" type="button" onclick="closeStageHub()">×</button>
+      <h2 id="cenStageHubTitle">시대별총람</h2>
+      <button class="cen-stagehub-close" type="button" data-stagehub-close="1">×</button>
     </div>
     <div class="cen-stagehub-grid">
-      <a class="cen-stage-card" href="https://centiger.github.io/CEN-United-Kingdom-Matrix/">
+      <button type="button" class="cen-stage-card ready" data-stage-url="https://centiger.github.io/CEN-United-Kingdom-Matrix/">
         <h3>통일왕국 Matrix</h3>
         <p>다윗 · 시온 · 언약궤 · 성전 · 왕국분열까지 이어지는 통일왕국 흐름을 탐험합니다.</p>
-        <div class="cen-stage-tag">5허브 통합엔진 연결</div>
-      </a>
-      <a class="cen-stage-card" href="https://centiger.github.io/CEN-Matrix/">
+        <div class="cen-stage-tag">바로가기</div>
+      </button>
+      <button type="button" class="cen-stage-card ready" data-stage-url="https://centiger.github.io/CEN-Matrix/">
         <h3>분열왕국 Matrix</h3>
         <p>선지자 · 제국 패권 · 왕국 붕괴 · 예루살렘 함락까지 이어지는 시대 흐름을 탐험합니다.</p>
-        <div class="cen-stage-tag">분열왕국 허브엔진 연결</div>
-      </a>
-      <div class="cen-stage-card coming">
+        <div class="cen-stage-tag">바로가기</div>
+      </button>
+      <button type="button" class="cen-stage-card coming" data-stage-url="https://centiger.github.io/CEN-Exile-Return-Matrix/">
         <h3>포로·귀환 Matrix</h3>
         <p>바벨론 포로 이후 귀환과 성전 회복, 메시아 대망으로 이어질 흐름입니다.</p>
-        <div class="cen-stage-tag">준비중</div>
-      </div>
+        <div class="cen-stage-tag">준비중 링크</div>
+      </button>
     </div>
   </div>
 </div>
 
-<script id="cen-stagehub-script-v2">
-function openStageHub(){
-  var el=document.getElementById('cenStageHubOverlay');
-  if(el) el.classList.add('show');
-}
-function closeStageHub(){
-  var el=document.getElementById('cenStageHubOverlay');
-  if(el) el.classList.remove('show');
-}
-function isStageHubTrigger(el){
-  if(!el) return false;
-  var txt=(el.innerText||el.textContent||'').replace(/\s+/g,'').trim();
-  var href=(el.getAttribute&&el.getAttribute('href')||'') + '';
-  var onclick=(el.getAttribute&&el.getAttribute('onclick')||'') + '';
-  return txt.includes('시대별총람') ||
-         href.includes('CEN-Matrix') ||
-         href.includes('CEN-Matrix-main') ||
-         onclick.includes('CEN-Matrix') ||
-         onclick.includes('시대별총람');
-}
-document.addEventListener('click', function(e){
-  var el=e.target;
-  while(el && el !== document.body){
-    if(isStageHubTrigger(el)){
+<script id="cen-stagehub-script-v3">
+(function(){
+  let stageHubOpenState = false;
+
+  window.openStageHub = function(){
+    const el=document.getElementById('cenStageHubOverlay');
+    if(!el) return;
+    el.classList.add('show');
+    el.setAttribute('aria-hidden','false');
+    if(!stageHubOpenState){
+      history.pushState({cenStageHub:true}, '', location.href);
+      stageHubOpenState = true;
+    }
+  };
+
+  window.closeStageHub = function(fromPop){
+    const el=document.getElementById('cenStageHubOverlay');
+    if(el){
+      el.classList.remove('show');
+      el.setAttribute('aria-hidden','true');
+    }
+    if(stageHubOpenState && !fromPop){
+      stageHubOpenState = false;
+      history.back();
+    } else {
+      stageHubOpenState = false;
+    }
+  };
+
+  function isStageHubTrigger(el){
+    if(!el || el.closest('#cenStageHubOverlay')) return false;
+    const txt=((el.innerText||el.textContent||'')+'').replace(/\s+/g,'').trim();
+    const href=((el.getAttribute&&el.getAttribute('href'))||'')+'';
+    const onclick=((el.getAttribute&&el.getAttribute('onclick'))||'')+'';
+    return txt.includes('시대별총람') ||
+           href.includes('CEN-Matrix') ||
+           href.includes('CEN-United-Kingdom-Matrix') ||
+           onclick.includes('CEN-Matrix') ||
+           onclick.includes('시대별총람');
+  }
+
+  document.addEventListener('click', function(e){
+    const closeBtn = e.target.closest('[data-stagehub-close]');
+    if(closeBtn){
       e.preventDefault();
       e.stopPropagation();
-      e.stopImmediatePropagation();
-      openStageHub();
-      return false;
+      closeStageHub(false);
+      return;
     }
-    el=el.parentElement;
-  }
-}, true);
-document.addEventListener('click', function(e){
-  var overlay=document.getElementById('cenStageHubOverlay');
-  if(e.target===overlay) closeStageHub();
-});
+
+    const stageBtn = e.target.closest('[data-stage-url]');
+    if(stageBtn){
+      e.preventDefault();
+      e.stopPropagation();
+      const url = stageBtn.getAttribute('data-stage-url');
+      if(url) location.href = url;
+      return;
+    }
+
+    const overlay=document.getElementById('cenStageHubOverlay');
+    if(e.target===overlay){
+      e.preventDefault();
+      e.stopPropagation();
+      closeStageHub(false);
+      return;
+    }
+  }, false);
+
+  document.addEventListener('click', function(e){
+    let el=e.target;
+    while(el && el !== document.body){
+      if(isStageHubTrigger(el)){
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        openStageHub();
+        return false;
+      }
+      el=el.parentElement;
+    }
+  }, true);
+
+  window.addEventListener('popstate', function(){
+    const overlay=document.getElementById('cenStageHubOverlay');
+    if(overlay && overlay.classList.contains('show')){
+      closeStageHub(true);
+    }
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape') closeStageHub(false);
+  });
+})();
 </script>
 
 </body>
