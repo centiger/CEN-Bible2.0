@@ -9087,8 +9087,16 @@ function openConnectionExploreMenu(event){
   window.open('https://centiger.github.io/cen-bible-chrololgy/', '_blank', 'noopener');
 }
 function openBibleSummaryMenu(event){
-  if(event) event.stopPropagation();
-  window.open('https://centiger.github.io/CEN-Matrix/', '_blank', 'noopener');
+  if(event){
+    event.preventDefault?.();
+    event.stopPropagation?.();
+  }
+  if(typeof window.openStageHub === 'function'){
+    window.openStageHub();
+  }else{
+    window.open('https://centiger.github.io/CEN-Matrix/', '_blank', 'noopener');
+  }
+  return false;
 }
 function openTabernacleTempleMenu(event){
   if(event) event.stopPropagation();
@@ -9458,17 +9466,6 @@ function showOverviewImagePlaceholder(img){
     }
   };
 
-  function isStageHubTrigger(el){
-    if(!el || el.closest('#cenStageHubOverlay')) return false;
-    const txt=((el.innerText||el.textContent||'')+'').replace(/\s+/g,'').trim();
-    const href=((el.getAttribute&&el.getAttribute('href'))||'')+'';
-    const onclick=((el.getAttribute&&el.getAttribute('onclick'))||'')+'';
-    return txt.includes('시대별총람') ||
-           href.includes('CEN-Matrix') ||
-           href.includes('CEN-United-Kingdom-Matrix') ||
-           onclick.includes('CEN-Matrix') ||
-           onclick.includes('시대별총람');
-  }
 
   document.addEventListener('click', function(e){
     const closeBtn = e.target.closest('[data-stagehub-close]');
@@ -9497,19 +9494,6 @@ function showOverviewImagePlaceholder(img){
     }
   }, false);
 
-  document.addEventListener('click', function(e){
-    let el=e.target;
-    while(el && el !== document.body){
-      if(isStageHubTrigger(el)){
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        openStageHub();
-        return false;
-      }
-      el=el.parentElement;
-    }
-  }, true);
 
   window.addEventListener('popstate', function(){
     const overlay=document.getElementById('cenStageHubOverlay');
