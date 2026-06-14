@@ -2331,6 +2331,20 @@ body.scoreViewerOpen{
 .cen-stage-card.coming{opacity:.82;filter:saturate(.8)}
 </style>
 
+
+<style id="cen-stage-explore-style">
+.cen-stage-modal{position:fixed;inset:0;background:rgba(0,0,0,.58);display:none;align-items:flex-end;justify-content:center;z-index:9999;padding:18px 10px 0}
+.cen-stage-modal.show{display:flex}
+.cen-stage-sheet{width:min(760px,100%);max-height:88vh;overflow:auto;background:linear-gradient(180deg,#101a25,#071017);border:1px solid rgba(255,209,117,.42);border-radius:24px 24px 0 0;padding:16px 14px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -16px 40px rgba(0,0,0,.48)}
+.cen-stage-head{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.cen-stage-kicker{font-size:11px;color:#f6c85d;font-weight:900}.cen-stage-head h2{margin:2px 0 4px;font-size:23px;line-height:1.15;color:#fff4cc}.cen-stage-head p{margin:0;font-size:12px;line-height:1.45;color:#d9c7a2}
+.cen-stage-close{flex:0 0 auto;border:0;border-radius:12px;background:#d79a25;color:#101010;font-weight:950;padding:9px 11px}
+.cen-stage-grid{display:grid;grid-template-columns:1fr;gap:8px}
+.cen-stage-card{display:grid;grid-template-columns:38px 40px 1fr;align-items:center;gap:8px;text-decoration:none;color:#fff;background:rgba(255,255,255,.065);border:1px solid rgba(255,209,117,.24);border-radius:16px;padding:10px 9px}
+.cen-stage-no{font-weight:950;color:#f6c85d;font-size:13px;text-align:center}.cen-stage-icon{font-size:24px;text-align:center}.cen-stage-text b{display:block;font-size:15px;color:#fff7dc;letter-spacing:-.04em}.cen-stage-text span{display:block;margin-top:3px;font-size:11.5px;color:#d6c39d;line-height:1.35;letter-spacing:-.04em}
+@media(min-width:680px){.cen-stage-grid{grid-template-columns:repeat(2,1fr)}.cen-stage-modal{align-items:center;padding:18px}.cen-stage-sheet{border-radius:24px}}
+</style>
+
 </head>
 <body>
 <div id="installTip">홈 화면에 추가하면 주소창이 줄어들어 앱처럼 사용할 수 있습니다.<button onclick="hideInstallTip()">닫기</button></div>
@@ -9414,7 +9428,7 @@ function showOverviewImagePlaceholder(img){
 <div id="cenStageHubOverlay" aria-hidden="true">
   <div class="cen-stagehub-panel" role="dialog" aria-modal="true" aria-labelledby="cenStageHubTitle">
     <div class="cen-stagehub-head">
-      <h2 id="cenStageHubTitle">시대별총람</h2>
+      <h2 id="cenStageHubTitle">시대탐험</h2>
       <button class="cen-stagehub-close" type="button" data-stagehub-close="1">×</button>
     </div>
     <div class="cen-stagehub-grid">
@@ -9514,6 +9528,43 @@ function showOverviewImagePlaceholder(img){
 </script>
 
 <!-- CEN Bible 2.0 patch: stagehub Jesus Matrix card + chronology deep link 20260530-2 -->
+
+<div class="cen-stage-modal" id="cenStageModal" aria-hidden="true">
+  <div class="cen-stage-sheet" role="dialog" aria-modal="true">
+    <div class="cen-stage-head">
+      <div><div class="cen-stage-kicker">CEN Bible Matrix</div><h2>🧭 시대탐험</h2><p>창조시대부터 초대교회까지 성경의 큰 시대를 Matrix로 탐험합니다.</p></div>
+      <button class="cen-stage-close" id="cenStageClose" type="button">닫기</button>
+    </div>
+    <div class="cen-stage-grid"><a class="cen-stage-card" href="https://centiger.github.io/CEN-M01-Creation/"><div class="cen-stage-no">01</div><div class="cen-stage-icon">🌍</div><div class="cen-stage-text"><b>창조시대</b><span>창조 · 타락 · 홍수 · 바벨</span></div></a>
+<a class="cen-stage-card" href="https://centiger.github.io/CEN-M02-Patriarch/"><div class="cen-stage-no">02</div><div class="cen-stage-icon">🐑</div><div class="cen-stage-text"><b>족장시대</b><span>아브라함 · 이삭 · 야곱 · 요셉</span></div></a>
+<a class="cen-stage-card" href="https://centiger.github.io/CEN-M03-Exodus/"><div class="cen-stage-no">03</div><div class="cen-stage-icon">🔥</div><div class="cen-stage-text"><b>출애굽광야시대</b><span>출애굽 · 시내산 · 성막 · 광야</span></div></a>
+<a class="cen-stage-card" href="https://centiger.github.io/CEN-M04-Conquest/"><div class="cen-stage-no">04</div><div class="cen-stage-icon">🏹</div><div class="cen-stage-text"><b>정복시대</b><span>요단강 · 여리고 · 가나안 · 세겜</span></div></a>
+<a class="cen-stage-card" href="https://centiger.github.io/CEN-M05-Judges/"><div class="cen-stage-no">05</div><div class="cen-stage-icon">⚖️</div><div class="cen-stage-text"><b>사사시대</b><span>사사 · 반복되는 타락 · 왕이 없던 시대</span></div></a>
+<a class="cen-stage-card" href="https://centiger.github.io/CEN-M06-United/"><div class="cen-stage-no">06</div><div class="cen-stage-icon">👑</div><div class="cen-stage-text"><b>통일왕국시대</b><span>사울 · 다윗 · 솔로몬 · 성전</span></div></a>
+<a class="cen-stage-card" href="https://centiger.github.io/CEN-M07-Divided/"><div class="cen-stage-no">07</div><div class="cen-stage-icon">⚔️</div><div class="cen-stage-text"><b>분열왕국시대</b><span>남유다 · 북이스라엘 · 선지자 · 멸망</span></div></a>
+<a class="cen-stage-card" href="https://centiger.github.io/CEN-M08-Return/"><div class="cen-stage-no">08</div><div class="cen-stage-icon">🏛️</div><div class="cen-stage-text"><b>포로귀환시대</b><span>귀환 · 성전재건 · 율법 · 성벽</span></div></a>
+<a class="cen-stage-card" href="https://centiger.github.io/CEN-M09-Jesus/"><div class="cen-stage-no">09</div><div class="cen-stage-icon">✝️</div><div class="cen-stage-text"><b>예수시대</b><span>성육신 · 공생애 · 십자가 · 부활</span></div></a>
+<a class="cen-stage-card" href="https://centiger.github.io/CEN-M10-Earlychurch/"><div class="cen-stage-no">10</div><div class="cen-stage-icon">🔥</div><div class="cen-stage-text"><b>초대교회시대</b><span>성령강림 · 복음확장 · 선교 · 재림소망</span></div></a>
+</div>
+  </div>
+</div>
+
+
+<script id="cen-stage-explore-script">
+(function(){
+function openStage(){var m=document.getElementById('cenStageModal');if(m){m.classList.add('show');m.setAttribute('aria-hidden','false');}}
+function closeStage(){var m=document.getElementById('cenStageModal');if(m){m.classList.remove('show');m.setAttribute('aria-hidden','true');}}
+document.addEventListener('click',function(e){
+ var c=e.target.closest&&e.target.closest('#cenStageClose'); if(c){e.preventDefault();e.stopPropagation();closeStage();return;}
+ var m=document.getElementById('cenStageModal'); if(m&&e.target===m){e.preventDefault();closeStage();return;}
+ var el=e.target.closest&&e.target.closest('a,button,[role="button"],.menu-card,.nav-item,.card,.item');
+ if(!el)return;
+ var t=(el.textContent||'').replace(/\s+/g,' ').trim();
+ if(/시대탐험|시대별총람/.test(t)){e.preventDefault();e.stopPropagation();openStage();}
+},true);
+})();
+</script>
+
 </body>
 </html>
 
