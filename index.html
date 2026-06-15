@@ -2547,7 +2547,7 @@ body.scoreViewerOpen{
         <button class="bibleGroupToggle" type="button" onclick="toggleBibleGroup(event, 'structureFlowGroup')">구조와 흐름</button>
         <div id="structureFlowGroup" class="bibleGroupButtons">
           <button class="menu-btn bible-understanding-btn" onclick="openOverview66Module(event)">한눈에 성경</button>
-          <button class="menu-btn bible-understanding-btn" onclick="openChronologyMenu(event)">성경연대기</button>
+          <button class="menu-btn bible-understanding-btn" onclick="openChronologyMenu(event)">성경연표</button>
           <button class="menu-btn bible-understanding-btn" onclick="openConnectionExploreMenu(event)">연결탐험</button>
           <button class="menu-btn bible-understanding-btn" onclick="openBibleSummaryMenu(event)">시대탐험</button>
         </div>
@@ -9131,14 +9131,14 @@ let cenOverviewFilter = 'all';
 let cenOverviewLoaded = false;
 const CEN_OVERVIEW_CATEGORY_LABELS = {
   bible_books:'성경 각 권',
-  chronology:'성경연대기',
+  chronology:'성경연표',
   summary:'시대탐험',
   tabernacle_temple:'성막·성전',
   feasts_sacrifices:'절기·제사'
 };
 const CEN_OVERVIEW_CATEGORIES = [
   {key:'bible_books', label:'성경 각 권', icon:'▣', desc:'성경 각 권의 개요와 핵심 내용을 한눈에 확인'},
-  {key:'chronology', label:'성경연대기', icon:'⌁', desc:'창조부터 초대교회까지 시간의 흐름으로 정리'},
+  {key:'chronology', label:'성경연표', icon:'⌁', desc:'창조부터 초대교회까지 시간의 흐름으로 정리'},
   {key:'summary', label:'시대탐험', icon:'표', desc:'왕조·선지자·인물·주제를 비교표로 쉽게 정리'},
   {key:'tabernacle_temple', label:'성막·성전', icon:'⌂', desc:'성막과 성전의 구조와 기구를 시각적으로 이해'},
   {key:'feasts_sacrifices', label:'절기·제사', icon:'✓', desc:'유대 절기와 제사의 의미와 절차를 시대탐험'}
