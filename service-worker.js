@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cen-bible-2-0-soft-overview-20260513-stage-realfix';
+const CACHE_NAME = 'cen-bible-2-0-m01-link-index-20260615';
 const APP_SHELL = [
   "./",
   "./index.html",

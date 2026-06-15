@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "cen-bible-chronology-v11-soft-overview-stage-realfix";
+const CACHE_NAME = "cen-bible-2-0-m01-link-index-20260615";
 const ASSETS = [
   "./",
   "./index.html",
