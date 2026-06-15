@@ -26,7 +26,7 @@ function go(page){
   $$(".page").forEach(p=>p.classList.remove("active"));
   $("#" + page).classList.add("active");
   $$(".navbtn").forEach(b=>b.classList.toggle("active", b.dataset.page === page));
-  if(page==="home") setHeader("성경연대기", "창조부터 새창조까지 흐름으로 탐험");
+  if(page==="home") setHeader("성경연표", "창조부터 새창조까지 흐름으로 탐험");
   if(page==="eras") setHeader("시대별 연대기", "시대 → 사건칩 → 탭카드");
   if(page==="detail") setHeader("핵심사건 상세", "탭카드와 원본 인포그래픽");
   if(page==="settings") setHeader("화면설정", "독립 PWA · 통합 대비 구조");
@@ -316,7 +316,7 @@ function init(){
     if(e.target.id === "backBtn"){
       if(currentPage === "detail") go("eras");
       else if(currentPage === "eras" || currentPage === "settings") go("home");
-      else alert("성경연대기를 종료하려면 브라우저 뒤로가기를 한 번 더 누르세요.");
+      else alert("성경연표를 종료하려면 브라우저 뒤로가기를 한 번 더 누르세요.");
     }
   });
 
