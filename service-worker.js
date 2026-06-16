@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cen-bible-2-0-m01-link-index-20260615';
+const CACHE_NAME = 'cen-bible-2-0-soft-overview-20260513-stage-realfix-nextlinks';
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -91,3 +91,5 @@ self.addEventListener("fetch", event => {
 // DIVINE_ICON_VIEWER_FIX_1778346414
 
 // BIBLE_ICON_VIEWER_FINAL_1778347075
+
+/* 20260616-next-era-links */

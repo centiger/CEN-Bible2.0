@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "cen-bible-2-0-m01-link-index-20260615";
+const CACHE_NAME = "cen-bible-chronology-v11-soft-overview-stage-realfix-nextlinks";
 const ASSETS = [
   "./",
   "./index.html",
@@ -25,3 +25,5 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
   e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
 });
+
+/* 20260616-next-era-links */
