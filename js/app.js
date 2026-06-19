@@ -27,7 +27,7 @@ function go(page){
   $("#" + page).classList.add("active");
   $$(".navbtn").forEach(b=>b.classList.toggle("active", b.dataset.page === page));
   if(page==="home") setHeader("성경연표", "창조부터 새창조까지 흐름으로 탐험");
-  if(page==="eras") setHeader("시대별 연대기", "시대 → 사건칩 → 탭카드");
+  if(page==="eras") setHeader("성경연표", "시대 → 사건칩 → 탭카드");
   if(page==="detail") setHeader("핵심사건 상세", "탭카드와 원본 인포그래픽");
   if(page==="settings") setHeader("화면설정", "독립 PWA · 통합 대비 구조");
   window.scrollTo({top:0,behavior:"instant"});
@@ -86,7 +86,7 @@ function selectEvent(eventId){
       <div class="small" style="margin-top:6px">시대: ${era.title} · ${era.year}</div>
       <div class="btn-row">
         <button class="cen-btn green" data-detail="${eventId}">${ready}</button>
-        <button class="cen-btn secondary" data-toast="related">연결탐험</button>
+        <button class="cen-btn secondary" data-toast="related">주제탐험</button>
       </div>
     `;
   }
@@ -194,12 +194,12 @@ function renderDetail(eventId){
     </section>
 
     <section class="scroll-section">
-      <div class="section-title">8. 연결탐험</div>
+      <div class="section-title">8. 주제탐험</div>
       <div class="keyword-grid">
         ${data.connect.map(x=>`<button class="keyword">↔ ${x}</button>`).join("")}
       </div>
       <div class="section-card notice-card">
-        연결탐험은 성막 · 절기 · 십자가 · 성찬 · 새창조 등 다른 메뉴로 이어지는 탐험 허브 역할을 합니다.
+        주제탐험은 성막 · 절기 · 십자가 · 성찬 · 새창조 등 다른 메뉴로 이어지는 탐험 허브 역할을 합니다.
       </div>
     </section>
 
