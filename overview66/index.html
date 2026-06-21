@@ -355,7 +355,7 @@ header{
 let books=[],current=null;
 async function init(){
   try{
-    const r=await fetch('./data/books.json?ver=cen2-integrated-v012-1778330337-1778329511-1778328579-1778327685');
+    const r=await fetch('./data/books.json?ver=cen2-onebible-homeback-20260621');
     const d=await r.json();
     books=d.books||[];
     renderList();
@@ -539,7 +539,19 @@ function openOriginal(){
 }
 
 function closeViewer(){const v=document.getElementById('viewer'); if(v){v.classList.remove('show'); v.style.display='none';}}
-function goBack(){document.getElementById('detail').classList.remove('show')}
+function goBack(){
+  const detail=document.getElementById('detail');
+  if(detail) detail.classList.remove('show');
+  try{ window.scrollTo(0,0); }catch(e){}
+}
+window.addEventListener('message', function(event){
+  const data = event && event.data ? event.data : {};
+  if(data.type === 'cen-overview66-back-home'){
+    if(document.getElementById('viewer').classList.contains('show')){ closeViewer(); return; }
+    if(document.getElementById('detail').classList.contains('show')){ goBack(); return; }
+    try{ window.scrollTo(0,0); }catch(e){}
+  }
+});
 window.onpopstate=function(){
   if(document.getElementById('viewer').classList.contains('show')){closeViewer();return}
   if(document.getElementById('detail').classList.contains('show')){goBack();return}
