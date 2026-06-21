@@ -2294,6 +2294,29 @@ body.scoreViewerOpen{
 #overview66Frame{
   background:#fbf6ee !important;
 }
+
+/* CEN OneBible detail nav cleanup */
+#overview66FrameTop{
+  display:grid !important;
+  grid-template-columns:92px 1fr 92px !important;
+  align-items:center !important;
+  gap:8px !important;
+}
+#overview66FrameTop strong{
+  text-align:center !important;
+  font-size:16px !important;
+  font-weight:900 !important;
+}
+#overview66FrameTop button{
+  justify-self:start !important;
+  min-width:82px !important;
+}
+#overview66FrameTop .overview66TopSpacer{
+  display:block !important;
+  width:82px !important;
+  height:1px !important;
+}
+
 </style>
 
 
@@ -9288,9 +9311,9 @@ function showOverviewImagePlaceholder(img){
 
 <div id="overview66FramePanel" aria-label="한눈에 성경">
   <div id="overview66FrameTop">
-    <button type="button" onclick="closeOverview66Module(event)">← 한눈에 성경</button>
+    <button type="button" onclick="closeOverview66Module(event)">← 뒤로</button>
     <strong>한눈에 성경</strong>
-    <button type="button" onclick="closeOverview66Module(event)">닫기</button>
+    <span class="overview66TopSpacer" aria-hidden="true"></span>
   </div>
   <iframe id="overview66Frame" title="한눈에 성경"></iframe>
 </div>
@@ -9301,7 +9324,7 @@ function showOverviewImagePlaceholder(img){
 
 <script id="cen-overview66-module-js">
 (function(){
-  const MODULE_URL = "./overview66/index.html?from=cen2&v=1778339097";
+  const MODULE_URL = "./overview66/index.html?from=cen2&v=onebible-nav-meaning-20260621";
 
   window.openOverview66Module = function(e){
     if(e){ e.preventDefault(); e.stopPropagation(); }

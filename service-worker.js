@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cen-bible-2-0-soft-overview-20260513-stage-realfix-nextlinks';
+const CACHE_NAME = 'cen-bible-2-0-soft-overview-20260513-stage-realfix-nextlinks-onebible-fix';
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -70,7 +70,7 @@ self.addEventListener("fetch", event => {
 
 // CEN_BIBLE_2_0_OVERVIEW66_MODULE_1778336522
 
-// OVERVIEW66_CLICK_FIXED_1778339097
+// OVERVIEW66_CLICK_FIXED_onebible-fix-20260621
 
 // ORIGINAL_IMAGE_FALLBACK_FIX_1778340348
 
