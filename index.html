@@ -2298,23 +2298,25 @@ body.scoreViewerOpen{
 /* CEN OneBible detail nav cleanup */
 #overview66FrameTop{
   display:grid !important;
-  grid-template-columns:92px 1fr 92px !important;
+  grid-template-columns:112px 1fr 112px !important;
   align-items:center !important;
-  gap:8px !important;
+  gap:6px !important;
 }
 #overview66FrameTop strong{
   text-align:center !important;
   font-size:16px !important;
   font-weight:900 !important;
+  white-space:nowrap !important;
 }
 #overview66FrameTop button{
   justify-self:start !important;
-  min-width:82px !important;
+  min-width:104px !important;
+  padding-left:9px !important;
+  padding-right:9px !important;
+  font-size:12px !important;
 }
-#overview66FrameTop .overview66TopSpacer{
-  display:block !important;
-  width:82px !important;
-  height:1px !important;
+#overview66FrameTop .overview66MainBtn{
+  justify-self:end !important;
 }
 
 </style>
@@ -9311,9 +9313,9 @@ function showOverviewImagePlaceholder(img){
 
 <div id="overview66FramePanel" aria-label="한눈에 성경">
   <div id="overview66FrameTop">
-    <button type="button" onclick="closeOverview66Module(event)">← 뒤로</button>
+    <button type="button" onclick="overview66BackToHome(event)">← 한눈에 성경</button>
     <strong>한눈에 성경</strong>
-    <span class="overview66TopSpacer" aria-hidden="true"></span>
+    <button type="button" class="overview66MainBtn" onclick="closeOverview66Module(event)">CEN Bible 2.0</button>
   </div>
   <iframe id="overview66Frame" title="한눈에 성경"></iframe>
 </div>
@@ -9324,7 +9326,7 @@ function showOverviewImagePlaceholder(img){
 
 <script id="cen-overview66-module-js">
 (function(){
-  const MODULE_URL = "./overview66/index.html?from=cen2&v=onebible-nav-meaning-20260621";
+  const MODULE_URL = "./overview66/index.html?from=cen2&v=onebible-nav-homeback-20260621";
 
   window.openOverview66Module = function(e){
     if(e){ e.preventDefault(); e.stopPropagation(); }
@@ -9340,6 +9342,16 @@ function showOverviewImagePlaceholder(img){
     if(frame) frame.src = MODULE_URL;
     if(panel) panel.classList.add('show');
     try{ history.pushState({overview66:true}, ""); }catch(_e){}
+  };
+
+  window.overview66BackToHome = function(e){
+    if(e){ e.preventDefault(); e.stopPropagation(); }
+    try{
+      const frame = document.getElementById('overview66Frame');
+      if(frame && frame.contentWindow){
+        frame.contentWindow.postMessage({type:'cen-overview66-back-home'}, '*');
+      }
+    }catch(_e){}
   };
 
   window.closeOverview66Module = function(e){

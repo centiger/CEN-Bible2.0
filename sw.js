@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "cen-bible-chronology-v11-soft-overview-stage-realfix-nextlinks-onebible-fix";
+const CACHE_NAME = "cen-bible-chronology-v12-onebible-homeback";
 const ASSETS = [
   "./",
   "./index.html",
