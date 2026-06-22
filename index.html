@@ -2377,7 +2377,14 @@ body.scoreViewerOpen{
 <style id="cen-wake-lock-style-v200">
 /* CEN Bible 2.0 - 화면 꺼짐 방지 설정 */
 #settingsSheet .wakeLockRow{
-  align-items:start !important;
+  align-items:center !important;
+}
+#settingsSheet .wakeLockRow > label{
+  display:flex !important;
+  align-items:center !important;
+  height:42px !important;
+  line-height:1.2 !important;
+  padding-top:0 !important;
 }
 #settingsSheet .wakeLockControls{
   display:grid !important;
@@ -2406,18 +2413,21 @@ body.scoreViewerOpen{
   box-shadow:0 2px 8px rgba(0,80,40,.22) !important;
 }
 #settingsSheet .wakeLockStatus{
+  height:42px !important;
   min-height:42px !important;
+  max-height:42px !important;
   display:flex !important;
   align-items:center !important;
-  padding:8px 10px !important;
+  padding:0 10px !important;
   border-radius:13px !important;
   border:1px solid #b9d7c8 !important;
   background:#eef8f3 !important;
   color:#0f6b3a !important;
   font-size:12.5px !important;
-  line-height:1.45 !important;
+  line-height:1.25 !important;
   font-weight:800 !important;
   box-sizing:border-box !important;
+  overflow:hidden !important;
 }
 #settingsSheet .wakeLockStatus.warn{
   border-color:#e0c49a !important;
@@ -2430,8 +2440,12 @@ body.scoreViewerOpen{
     gap:6px !important;
   }
   #settingsSheet .wakeLockStatus{
+    height:42px !important;
+    min-height:42px !important;
+    max-height:42px !important;
     font-size:11.5px !important;
-    padding:7px 8px !important;
+    padding:0 8px !important;
+    line-height:1.22 !important;
   }
 }
 </style>
