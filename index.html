@@ -3179,10 +3179,44 @@ function toggleVerse(div, forceOn=false) {
 function showSelectToolbar() { document.getElementById('selectToolbar').classList.add('show'); updateSelectToolbar(); }
 function updateSelectToolbar() { document.getElementById('selectCount').textContent = selectedKeys.size+'절 선택'; if(selectedKeys.size===0) clearSelection(); }
 function clearSelection(e) { if(e)e.stopPropagation(); selectedKeys.clear(); selectionMode=false; document.querySelectorAll('.verse.selected').forEach(x=>x.classList.remove('selected')); document.getElementById('selectToolbar').classList.remove('show'); }
+function parseVerseKeyForCopy(key){
+  const parts = String(key || '').split('|');
+  return {
+    book: parts[0] || state.book,
+    chap: parts[1] || state.chap,
+    verse: parts[2] || ''
+  };
+}
+
+function formatSelectedVerseLineForCopy(info, text, index, prevInfo){
+  // 여러 절 복사 형식:
+  // 1) 첫 줄만 성경이름 + 장:절 표기
+  // 2) 같은 장 안에서는 절 번호만 표기
+  // 3) 장이 바뀌면 그 첫 절만 장:절 표기, 이후는 절만 표기
+  if(index === 0 || !prevInfo || info.book !== prevInfo.book){
+    return `${info.book} ${info.chap}:${info.verse} ${text}`;
+  }
+  if(info.chap !== prevInfo.chap){
+    return `${info.chap}:${info.verse} ${text}`;
+  }
+  return `${info.verse} ${text}`;
+}
+
 function copySelected(e) {
   e.stopPropagation();
-  const lines=[]; document.querySelectorAll('.verse').forEach(div=>{ if(selectedKeys.has(div.dataset.key)) lines.push(`${state.book} ${state.chap}:${div.dataset.v} ${div.dataset.text}`); });
-  copyText(lines.join('\n')); clearSelection();
+  const selectedVerses = [];
+  document.querySelectorAll('.verse').forEach(div=>{
+    if(selectedKeys.has(div.dataset.key)){
+      const info = parseVerseKeyForCopy(div.dataset.key);
+      selectedVerses.push({ info, text: div.dataset.text || '' });
+    }
+  });
+  const lines = selectedVerses.map((item, idx)=>{
+    const prev = idx > 0 ? selectedVerses[idx - 1].info : null;
+    return formatSelectedVerseLineForCopy(item.info, item.text, idx, prev);
+  });
+  copyText(lines.join('\n'));
+  clearSelection();
 }
 function addMemoToSelected(e) {
   e.stopPropagation(); if(!selectedKeys.size) return;
