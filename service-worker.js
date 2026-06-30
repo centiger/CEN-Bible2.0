@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cen-bible-2-0-onebible-homeback-20260621';
+const CACHE_NAME = 'cen-bible-2-0-search-ranking-verse-jump-20260630';
 const APP_SHELL = [
   "./",
   "./index.html",

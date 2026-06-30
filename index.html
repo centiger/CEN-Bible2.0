@@ -9890,6 +9890,97 @@ function showOverviewImagePlaceholder(img){
 })();
 </script>
 
+
+<script id="cen-search-ranking-and-verse-jump-fix-20260630">
+(function(){
+  function escapeForRegExp(s){ return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+  function safeText(s){ return (typeof escapeHtml === 'function') ? escapeHtml(String(s)) : String(s).replace(/[&<>"']/g, function(ch){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]; }); }
+  function isWordChar(ch){ return !!ch && /[0-9A-Za-z가-힣ㄱ-ㅎㅏ-ㅣ]/.test(ch); }
+  function hasStandaloneTerm(text, q){
+    text = String(text || ''); q = String(q || '');
+    if (!q) return false;
+    var pos = text.indexOf(q);
+    while (pos !== -1) {
+      var before = pos > 0 ? text.charAt(pos - 1) : '';
+      var after = text.charAt(pos + q.length) || '';
+      if (!isWordChar(before) && !isWordChar(after)) return true;
+      pos = text.indexOf(q, pos + q.length);
+    }
+    return false;
+  }
+  function highlightTerm(text, q){
+    var escaped = safeText(text);
+    if (!q) return escaped;
+    return escaped.replace(new RegExp(escapeForRegExp(safeText(q)), 'g'), '<mark>' + safeText(q) + '</mark>');
+  }
+  async function jumpToVerse(book, chap, verse){
+    state.book = book;
+    state.chap = String(chap);
+    if (typeof saveSlots === 'function') saveSlots();
+    if (typeof closeModal === 'function') closeModal('searchPanel');
+    await loadChapter(true);
+    setTimeout(function(){
+      var selector = '.verse[data-v="' + String(verse).replace(/"/g, '\\"') + '"]';
+      var el = document.querySelector(selector);
+      if (!el) return;
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+      el.classList.add('searchJumpTarget');
+      el.style.outline = '3px solid rgba(180, 120, 40, .65)';
+      el.style.borderRadius = '10px';
+      setTimeout(function(){
+        el.classList.remove('searchJumpTarget');
+        el.style.outline = '';
+        el.style.borderRadius = '';
+      }, 2600);
+    }, 120);
+  }
+  window.cenOpenSearchVerse = jumpToVerse;
+  window.searchBible = async function(){
+    var input = document.getElementById('searchInput');
+    var r = document.getElementById('searchResult');
+    var q = input ? input.value.trim() : '';
+    if (!r) return;
+    r.innerHTML = '';
+    if (!q) return;
+    await loadVersion(state.version);
+    var list = [];
+    var bookList = (typeof books !== 'undefined') ? books : (typeof BOOKS !== 'undefined' ? BOOKS : []);
+    bookList.forEach(function(b, bi){
+      var chapters = (bibleData[state.version] && bibleData[state.version][b]) || {};
+      Object.keys(chapters).forEach(function(c){
+        (chapters[c] || []).forEach(function(v){
+          var t = String(v.t || '');
+          var ref = b + ' ' + c + ':' + v.v;
+          if (t.indexOf(q) !== -1 || ref.indexOf(q) !== -1) {
+            var standalone = hasStandaloneTerm(t, q);
+            list.push({book:b, chap:String(c), verse:String(v.v), text:t, bi:bi, standalone:standalone});
+          }
+        });
+      });
+    });
+    list.sort(function(a,b){
+      if (a.standalone !== b.standalone) return a.standalone ? -1 : 1;
+      if (a.bi !== b.bi) return a.bi - b.bi;
+      if (Number(a.chap) !== Number(b.chap)) return Number(a.chap) - Number(b.chap);
+      return Number(a.verse) - Number(b.verse);
+    });
+    var limit = 300;
+    var shown = list.slice(0, limit);
+    r.insertAdjacentHTML('beforeend', '<p><b>' + list.length + '</b>개 검색됨 · <b>' + shown.length + '</b>개 표시</p>');
+    if (list.length > limit) {
+      r.insertAdjacentHTML('beforeend', '<p style="font-size:13px;color:#7a6652;margin-top:-4px;">정확 일치 구절을 먼저 보여주고, 나머지는 성경 순서대로 표시합니다.</p>');
+    }
+    shown.forEach(function(item){
+      var d = document.createElement('div');
+      d.className = 'searchItem';
+      d.innerHTML = '<b>' + item.book + ' ' + item.chap + ':' + item.verse + '</b>' + (item.standalone ? ' <span style="font-size:12px;color:#8a5a24;">정확</span>' : '') + '<br>' + highlightTerm(item.text, q);
+      d.onclick = function(){ jumpToVerse(item.book, item.chap, item.verse); };
+      r.appendChild(d);
+    });
+  };
+})();
+</script>
+
 </body>
 </html>
 
@@ -10073,84 +10164,3 @@ function showOverviewImagePlaceholder(img){
 <!-- FASTLOAD_EXTERNAL_DATA_1778343807 -->
 
 <!-- COLOR_ICONS_FAST_START_1778345585 -->
-
-<script id="cen-bible-search-verse-jump-fix-20260630">
-(function(){
-  "use strict";
-
-  function htmlEscape(s){
-    if (typeof escapeHtml === "function") return escapeHtml(String(s ?? ""));
-    return String(s ?? "").replace(/[&<>"]/g, function(ch){
-      return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"})[ch];
-    });
-  }
-
-  function highlightKeyword(text, q){
-    var safe = htmlEscape(text);
-    var safeQ = htmlEscape(q);
-    return safeQ ? safe.split(safeQ).join('<mark>' + safeQ + '</mark>') : safe;
-  }
-
-  function findVerseElement(book, chap, verse){
-    var key = String(book) + '|' + String(chap) + '|' + String(verse);
-    var list = document.querySelectorAll('#content .verse');
-    for (var i=0; i<list.length; i++){
-      if (String(list[i].dataset.key || '') === key || String(list[i].dataset.v || '') === String(verse)) return list[i];
-    }
-    return null;
-  }
-
-  window.goToBibleSearchVerse = async function(book, chap, verse){
-    state.book = book;
-    state.chap = String(chap);
-    saveSlots();
-    closeModal('searchPanel');
-    await loadChapter(true);
-    setTimeout(function(){
-      var el = findVerseElement(book, chap, verse);
-      if (!el) return;
-      el.scrollIntoView({ behavior:'smooth', block:'center' });
-      el.classList.add('selected');
-      setTimeout(function(){ el.classList.remove('selected'); }, 1600);
-    }, 180);
-  };
-
-  window.searchBible = async function(){
-    var q = (document.getElementById('searchInput')?.value || '').trim();
-    var r = document.getElementById('searchResult');
-    if (!r) return;
-    r.innerHTML = '';
-    if (!q) return;
-    await loadVersion(state.version);
-    var cnt = 0;
-    books.forEach(function(b){
-      Object.keys((bibleData[state.version] && bibleData[state.version][b]) || {}).forEach(function(c){
-        ((bibleData[state.version][b] && bibleData[state.version][b][c]) || []).forEach(function(v){
-          if (String(v.t || '').includes(q) && cnt < 300){
-            cnt++;
-            var d = document.createElement('div');
-            d.className = 'searchItem';
-            var ref = b + ' ' + c + ':' + v.v;
-            var addBtn = '';
-            if (typeof addVerseObjectToMyVersesClean === 'function'){
-              addBtn = '<div style="margin-top:6px"><button type="button">나의 성구에 추가</button></div>';
-            }
-            d.innerHTML = '<b>' + htmlEscape(ref) + '</b><br>' + highlightKeyword(v.t, q) + addBtn;
-            d.onclick = function(){ goToBibleSearchVerse(b, c, v.v); };
-            var btn = d.querySelector('button');
-            if (btn){
-              btn.onclick = function(event){
-                event.stopPropagation();
-                addVerseObjectToMyVersesClean({book:b, chapter:String(c), verse:String(v.v), text:v.t, version:state.version, ref:ref});
-              };
-            }
-            r.appendChild(d);
-          }
-        });
-      });
-    });
-    r.insertAdjacentHTML('afterbegin','<p><b>' + cnt + '</b>개 표시</p>');
-  };
-})();
-</script>
-
