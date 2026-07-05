@@ -9264,8 +9264,8 @@ function openBibleSummaryMenu(event){
   return false;
 }
 function openTabernacleTempleMenu(event){
-  if(event) event.stopPropagation();
-  alert('성막성전 PWA 개발 예정');
+  event?.stopPropagation?.();
+  location.href = "https://centiger.github.io/CEN-Tabernacle/";
 }
 function openFestivalSacrificeMenu(event){
   if(event) event.stopPropagation();
