@@ -2450,6 +2450,93 @@ body.scoreViewerOpen{
 }
 </style>
 
+
+<style>
+/* v1.5.9 데이터 관리/백업 중요도 강조 */
+#settingsSheet .dataManageRow{
+  margin:12px 0 6px !important;
+  padding:10px !important;
+  border:2px solid #f0a43a !important;
+  border-radius:14px !important;
+  background:linear-gradient(135deg,#fff7df 0%,#fff1cf 100%) !important;
+  box-shadow:0 3px 10px rgba(160,90,20,.16) !important;
+}
+#settingsSheet .dataManageRow > label{
+  color:#c2410c !important;
+  font-weight:900 !important;
+  letter-spacing:-.3px !important;
+}
+#settingsSheet .dataManageBtns button{
+  color:#fff !important;
+  font-weight:900 !important;
+  border:0 !important;
+  box-shadow:0 2px 8px rgba(0,0,0,.18) !important;
+}
+#settingsSheet .dataManageBtns button:nth-child(1){
+  background:#15803d !important;
+}
+#settingsSheet .dataManageBtns button:nth-child(2){
+  background:#ea580c !important;
+}
+#settingsSheet .backupStatus{
+  margin:2px 12px 10px 98px !important;
+  padding:6px 9px !important;
+  border-radius:9px !important;
+  font-size:11.5px !important;
+  font-weight:900 !important;
+  opacity:1 !important;
+}
+#settingsSheet .backupStatus.noBackup{
+  color:#b91c1c !important;
+  background:#fee2e2 !important;
+  border:1px solid #fecaca !important;
+}
+#settingsSheet .backupStatus.hasBackup{
+  color:#166534 !important;
+  background:#dcfce7 !important;
+  border:1px solid #bbf7d0 !important;
+}
+.guideBackupSection{
+  border:2px solid #f59e0b !important;
+  background:#fff7ed !important;
+  box-shadow:0 3px 12px rgba(180,83,9,.14) !important;
+}
+.guideBackupSection h4{
+  color:#c2410c !important;
+  font-weight:900 !important;
+}
+.guideBackupSection .guideNum{
+  background:#ea580c !important;
+  color:#fff !important;
+}
+.guideBackupSection .guideList,
+.guideBackupSection .guideList li{
+  color:#b45309 !important;
+  font-weight:800 !important;
+}
+.guideBackupSection b{
+  color:#b91c1c !important;
+  font-weight:900 !important;
+}
+</style>
+
+
+<style id="cen-backup-highlight-final">
+/* 최종 백업 강조: 뒤쪽 CSS보다 우선 */
+#settingsSheet .dataManageRow{margin:14px 0 8px !important;padding:12px !important;border:2px solid #f59e0b !important;border-radius:16px !important;background:linear-gradient(135deg,#fff7df 0%,#ffedd5 100%) !important;box-shadow:0 4px 12px rgba(180,83,9,.18) !important;}
+#settingsSheet .dataManageRow>label{color:#c2410c !important;font-weight:900 !important;}
+#settingsSheet .dataManageBtns button{color:#fff !important;font-weight:900 !important;border-width:1px !important;}
+#settingsSheet .dataManageBtns button:first-child{background:#15803d !important;border-color:#166534 !important;box-shadow:0 3px 9px rgba(21,128,61,.28) !important;}
+#settingsSheet .dataManageBtns button:last-child{background:#ea580c !important;border-color:#c2410c !important;box-shadow:0 3px 9px rgba(234,88,12,.28) !important;}
+#settingsSheet .backupStatus{margin:4px 12px 10px 98px !important;padding:7px 10px !important;border-radius:10px !important;font-size:11.5px !important;font-weight:900 !important;opacity:1 !important;}
+#settingsSheet .backupStatus.noBackup{color:#b91c1c !important;background:#fee2e2 !important;border:1px solid #fecaca !important;}
+#settingsSheet .backupStatus.hasBackup{color:#166534 !important;background:#dcfce7 !important;border:1px solid #bbf7d0 !important;}
+.guideBackupSection{border:2px solid #f59e0b !important;background:#fff7ed !important;box-shadow:0 4px 14px rgba(180,83,9,.18) !important;}
+.guideBackupSection h4{color:#c2410c !important;font-weight:900 !important;}
+.guideBackupSection .guideNum{background:#ea580c !important;color:#fff !important;}
+.guideBackupSection .guideList,.guideBackupSection .guideList li{color:#b45309 !important;font-weight:800 !important;}
+.guideBackupSection b{color:#b91c1c !important;font-weight:900 !important;}
+</style>
 </head>
 <body>
 <div id="installTip">홈 화면에 추가하면 주소창이 줄어들어 앱처럼 사용할 수 있습니다.<button onclick="hideInstallTip()">닫기</button></div>
@@ -2599,10 +2686,12 @@ body.scoreViewerOpen{
       </ul>
     </div>
 
-    <div class="guideSection"><h4><span class="guideNum">15</span> 데이터 백업</h4>
-      <ul class="guideList">
-        <li>나의 성구, 메모, 읽기표 등 개인 데이터를 저장하고 다시 불러오는 기능입니다.</li>
-        <li><span style="background:#FFF3CD;color:#B85C00;padding:2px 6px;border-radius:4px;font-weight:700;">중요</span> 기기 변경, 앱 삭제 또는 데이터 초기화 전에 반드시 백업(내보내기)을 진행하세요. 백업 파일이 있으면 언제든지 데이터를 복원할 수 있습니다.</li>
+    <div class="guideSection guideBackupSection" style="border:2px solid #f59e0b !important; background:#fff7ed !important; box-shadow:0 4px 14px rgba(180,83,9,.18) !important;">
+      <h4 style="color:#c2410c !important; font-weight:900 !important;"><span class="guideNum" style="background:#ea580c !important; color:#fff !important;">15</span> 데이터 백업</h4>
+      <ul class="guideList" style="color:#b45309 !important; font-weight:800 !important;">
+        <li style="color:#b45309 !important; font-weight:800 !important;"><b style="color:#b91c1c !important; font-weight:900 !important;">나의 성구, 메모, 읽기표</b> 등 개인 데이터를 저장하고 다시 불러오는 기능입니다.</li>
+        <li style="color:#b45309 !important; font-weight:800 !important;"><b style="color:#b91c1c !important; font-weight:900 !important; background:#fef3c7 !important; padding:2px 5px !important; border-radius:6px !important;">중요</b> 기기 변경, 앱 삭제 또는 데이터 초기화 전에는 반드시 <b style="color:#b91c1c !important; font-weight:900 !important;">백업(내보내기)</b>을 진행하세요.</li>
+        <li style="color:#b45309 !important; font-weight:800 !important;">백업 파일이 있어야 소중한 기록을 다시 복원할 수 있습니다.</li>
       </ul>
     </div>
 
@@ -2709,14 +2798,14 @@ onclick="toggleBibleGroup(event, 'structureFlowGroup')">
     </div>
   </div>
 
-  <div class="settingControlRow dataManageRow">
-    <label>데이터 관리</label>
+  <div class="settingControlRow dataManageRow" style="margin:14px 0 8px !important; padding:12px !important; border:2px solid #f59e0b !important; border-radius:16px !important; background:linear-gradient(135deg,#fff7df 0%,#ffedd5 100%) !important; box-shadow:0 4px 12px rgba(180,83,9,.18) !important;">
+    <label style="color:#c2410c !important; font-weight:900 !important;">데이터 관리</label>
     <div class="settingBtns dataManageBtns">
-      <button onclick="exportCenBibleData(event)" style="background:#2E7D32;color:#fff;font-weight:700;">💾 내보내기</button>
-      <button onclick="importCenBibleData(event)" style="background:#EF6C00;color:#fff;font-weight:700;">📦 불러오기</button>
+      <button onclick="exportCenBibleData(event)" style="background:#15803d !important; color:#fff !important; border:1px solid #166534 !important; font-weight:900 !important; box-shadow:0 3px 9px rgba(21,128,61,.28) !important;">💾 내보내기</button>
+      <button onclick="importCenBibleData(event)" style="background:#ea580c !important; color:#fff !important; border:1px solid #c2410c !important; font-weight:900 !important; box-shadow:0 3px 9px rgba(234,88,12,.28) !important;">📦 불러오기</button>
     </div>
   </div>
-  <div id="backupStatus" class="backupStatus">마지막 백업: 없음</div>
+  <div id="backupStatus" class="backupStatus" style="margin:4px 12px 10px 98px !important; padding:7px 10px !important; border-radius:10px !important; font-size:11.5px !important; font-weight:900 !important; color:#b91c1c !important; background:#fee2e2 !important; border:1px solid #fecaca !important; opacity:1 !important;">마지막 백업: 없음</div>
   <input type="file" id="cenBibleImportFile" accept="application/json,.json" style="display:none">
 
   <button class="guideBtn" onclick="openGuideFromSettings(event)">사용가이드</button>
@@ -4670,11 +4759,11 @@ function openGuideFromSettings(e){
     const el=document.getElementById('backupStatus');
     if(!el) return;
     const iso=localStorage.getItem('lastBackupAtV1');
-    if(!iso){ el.textContent='마지막 백업: 없음'; return; }
+    if(!iso){ el.textContent='마지막 백업: 없음'; el.classList.remove('hasBackup'); el.classList.add('noBackup'); return; }
     const d=new Date(iso);
-    if(isNaN(d.getTime())){ el.textContent='마지막 백업: 기록 오류'; return; }
+    if(isNaN(d.getTime())){ el.textContent='마지막 백업: 기록 오류'; el.classList.remove('hasBackup'); el.classList.add('noBackup'); return; }
     const pad=n=>String(n).padStart(2,'0');
-    el.textContent='마지막 백업: '+d.getFullYear()+'.'+pad(d.getMonth()+1)+'.'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes());
+    el.textContent='마지막 백업: '+d.getFullYear()+'.'+pad(d.getMonth()+1)+'.'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes()); el.classList.remove('noBackup'); el.classList.add('hasBackup');
   };
   document.addEventListener('DOMContentLoaded', updateBackupStatus);
   const oldOpenSettings=window.openSettings;
