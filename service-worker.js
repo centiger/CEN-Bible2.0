@@ -1,95 +1,141 @@
-const CACHE_NAME = 'cen-bible-2-0-search-ranking-verse-jump-20260630';
+/*
+  CEN Bible 2.0 Offline Core v1.0
+  목표: 메인 PWA에서 성경 읽기/검색에 필요한 핵심 파일과 성경 압축 데이터를
+  설치/첫 실행 시 캐시하여 네트워크가 끊겨도 성경 기능이 작동하도록 한다.
+*/
+const CACHE_NAME = 'cen-bible-2-0-offline-core-v1-20260709';
+
 const APP_SHELL = [
-  "./",
-  "./index.html",
-  "./manifest.json",
-  "./overview66/manifest.json",
-  "./overview66/data/books.json",
-  "./overview66/index.html",
-  "./data/books.json",
-  "./data/bible-overview.json",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png"
+  './',
+  './index.html',
+  './manifest.json',
+  './css/style.css',
+  './js/app.js',
+  './js/chronology-data.js',
+  './books.json',
+  './bible-overview.json',
+  './progress.json',
+  './data/books.json',
+  './data/bible-overview.json',
+  './data/progress.json',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icon-192.png',
+  './icon-512.png',
+  './overview66/index.html',
+  './overview66/manifest.json'
 ];
 
-self.addEventListener("install", event => {
+// 성경 읽기/검색의 핵심 데이터. index.html의 VERSION_IDS와 동일하게 유지한다.
+const BIBLE_CORE_DATA = [
+  './data/compressed/DATA_V0.gz', // 개역개정판
+  './data/compressed/DATA_V1.gz', // 개역한글판
+  './data/compressed/DATA_V2.gz', // 쉬운성경
+  './data/compressed/DATA_V4.gz', // NIV
+  './data/compressed/DATA_V5.gz', // KJV
+  './data/compressed/DATA_V6.gz', // ESV
+  './data/compressed/DATA_HYMNS.gz'
+];
+
+const PRECACHE_URLS = APP_SHELL.concat(BIBLE_CORE_DATA);
+
+async function cacheCoreFiles() {
+  const cache = await caches.open(CACHE_NAME);
+  await Promise.all(
+    PRECACHE_URLS.map(async (url) => {
+      try {
+        await cache.add(url);
+      } catch (err) {
+        // 일부 보조 파일이 없어도 설치 전체가 실패하지 않게 한다.
+        console.warn('[CEN offline] cache skipped:', url, err);
+      }
+    })
+  );
+}
+
+self.addEventListener('install', event => {
   self.skipWaiting();
+  event.waitUntil(cacheCoreFiles());
+});
+
+self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL))
+    caches.keys()
+      .then(keys => Promise.all(keys.map(key => key !== CACHE_NAME ? caches.delete(key) : null)))
+      .then(() => self.clients.claim())
   );
 });
 
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keys => Promise.all(
-      keys.map(key => key !== CACHE_NAME ? caches.delete(key) : null)
-    )).then(() => self.clients.claim())
-  );
-});
-
-self.addEventListener("message", event => {
-  if (event.data && event.data.type === "SKIP_WAITING") {
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
+  }
+  if (event.data && event.data.type === 'CEN_CACHE_CORE') {
+    event.waitUntil(cacheCoreFiles());
   }
 });
 
-self.addEventListener("fetch", event => {
+function isBibleCoreRequest(req) {
+  const url = new URL(req.url);
+  return url.pathname.includes('/data/compressed/DATA_') ||
+         url.pathname.endsWith('/data/books.json') ||
+         url.pathname.endsWith('/books.json');
+}
+
+function isSameOrigin(req) {
+  try { return new URL(req.url).origin === self.location.origin; }
+  catch(e) { return false; }
+}
+
+async function cacheFirst(req) {
+  const cache = await caches.open(CACHE_NAME);
+  const cached = await cache.match(req, { ignoreSearch: true });
+  if (cached) return cached;
+  const res = await fetch(req);
+  if (res && res.ok) cache.put(req, res.clone());
+  return res;
+}
+
+async function networkFirstHTML(req) {
+  const cache = await caches.open(CACHE_NAME);
+  try {
+    const res = await fetch(req, { cache: 'no-store' });
+    if (res && res.ok) cache.put('./index.html', res.clone());
+    return res;
+  } catch (err) {
+    return (await cache.match('./index.html')) || Response.error();
+  }
+}
+
+async function staleWhileRevalidate(req) {
+  const cache = await caches.open(CACHE_NAME);
+  const cached = await cache.match(req, { ignoreSearch: true });
+  const network = fetch(req).then(res => {
+    if (res && res.ok && isSameOrigin(req)) cache.put(req, res.clone());
+    return res;
+  }).catch(() => null);
+  return cached || network || Response.error();
+}
+
+self.addEventListener('fetch', event => {
   const req = event.request;
-  if (req.method !== "GET") return;
+  if (req.method !== 'GET') return;
 
-  const accept = req.headers.get("accept") || "";
-  const isHTML = req.mode === "navigate" || accept.includes("text/html");
+  const accept = req.headers.get('accept') || '';
+  const isHTML = req.mode === 'navigate' || accept.includes('text/html');
 
-  if (isHTML) {
-    event.respondWith(
-      fetch(req, { cache: "no-store" })
-        .then(res => {
-          const copy = res.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put("./index.html", copy));
-          return res;
-        })
-        .catch(() => caches.match("./index.html"))
-    );
+  if (isHTML && isSameOrigin(req)) {
+    event.respondWith(networkFirstHTML(req));
     return;
   }
 
-  event.respondWith(
-    caches.match(req).then(cached => {
-      return cached || fetch(req).then(res => {
-        const copy = res.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(req, copy));
-        return res;
-      });
-    })
-  );
+  // 성경 본문/검색 데이터는 오프라인 우선. ?v=fastload 같은 쿼리도 동일 파일로 처리한다.
+  if (isSameOrigin(req) && isBibleCoreRequest(req)) {
+    event.respondWith(cacheFirst(req));
+    return;
+  }
+
+  if (isSameOrigin(req)) {
+    event.respondWith(staleWhileRevalidate(req));
+  }
 });
-
-// CEN_BIBLE_2_0_JSON_FINAL_1778334331
-
-// USER_UPLOADED_BOOKS_JSON_1778335550
-
-// CEN_BIBLE_2_0_OVERVIEW66_MODULE_1778336522
-
-// OVERVIEW66_CLICK_FIXED_onebible-fix-20260621
-
-// ORIGINAL_IMAGE_FALLBACK_FIX_1778340348
-
-// ORIGINAL_FILENAME_XX_ENGLISH_FIX_1778341213
-
-// UI_MEMORY_VERSE_FIX_1778342428
-
-// ICON_VERSE_CLEAN_FIX_1778343405
-
-// FASTLOAD_EXTERNAL_DATA_1778343807
-
-// MEMORY_RELATED_ICON_VERSE_FORMAT_FIX_1778344354
-
-// VIEWER_ZOOM_ICONS_VERSE_FORMAT_1778344737
-
-// COLOR_ICONS_FAST_START_1778345585
-
-// DIVINE_ICON_VIEWER_FIX_1778346414
-
-// BIBLE_ICON_VIEWER_FINAL_1778347075
-
-/* 20260616-next-era-links */
