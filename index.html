@@ -2602,7 +2602,7 @@ body.scoreViewerOpen{
     <div class="guideSection"><h4><span class="guideNum">15</span> 데이터 백업</h4>
       <ul class="guideList">
         <li>나의 성구, 메모, 읽기표 등 개인 데이터를 저장하고 다시 불러오는 기능입니다.</li>
-        <li>기기 변경이나 오류에 대비해 중요한 기록을 안전하게 보관할 수 있습니다.</li>
+        <li><span style="background:#FFF3CD;color:#B85C00;padding:2px 6px;border-radius:4px;font-weight:700;">중요</span> 기기 변경, 앱 삭제 또는 데이터 초기화 전에 반드시 백업(내보내기)을 진행하세요. 백업 파일이 있으면 언제든지 데이터를 복원할 수 있습니다.</li>
       </ul>
     </div>
 
@@ -2712,8 +2712,8 @@ onclick="toggleBibleGroup(event, 'structureFlowGroup')">
   <div class="settingControlRow dataManageRow">
     <label>데이터 관리</label>
     <div class="settingBtns dataManageBtns">
-      <button onclick="exportCenBibleData(event)">내보내기</button>
-      <button onclick="importCenBibleData(event)">불러오기</button>
+      <button onclick="exportCenBibleData(event)" style="background:#2E7D32;color:#fff;font-weight:700;">💾 내보내기</button>
+      <button onclick="importCenBibleData(event)" style="background:#EF6C00;color:#fff;font-weight:700;">📦 불러오기</button>
     </div>
   </div>
   <div id="backupStatus" class="backupStatus">마지막 백업: 없음</div>
