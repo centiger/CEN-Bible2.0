@@ -10145,9 +10145,11 @@ function showOverviewImagePlaceholder(img){
       .replace(/\s+/g, " ")
       .trim();
 
-    // 콤마로 여러 구절이 연결된 경우에는 첫 번째 구절만 사용합니다.
+    // 연속 범위(~ 또는 -)가 아니라 여러 구절을 나열한 경우에는
+    // 콤마·세미콜론 등 첫 구분자 앞의 장절만 사용합니다.
+    // 예: "창세기 13:18; 18:1~33" → "창세기 13:18"
     // 예: "창세기 12:1, 12:4, 13:2" → "창세기 12:1"
-    const cleaned = cleanedAll.split(",")[0].trim();
+    const cleaned = cleanedAll.split(/[;,，；、]/)[0].trim();
 
     const m = cleaned.match(/^(.+?)\s+(\d+)\s*:\s*(\d+)(?:\s*[~\-]\s*(?:(\d+)\s*:\s*)?(\d+))?$/)
       || cleaned.match(/^([가-힣]+?)\s*(\d+)\s*:\s*(\d+)(?:\s*[~\-]\s*(?:(\d+)\s*:\s*)?(\d+))?$/);
