@@ -10090,16 +10090,32 @@ function showOverviewImagePlaceholder(img){
 </script>
 
 
-<!-- CEN Journey Explorer → CEN Bible 2.0 말씀 바로가기 -->
-<style id="cen-journey-deeplink-style">
-  .verse.cen-journey-target{
-    background:rgba(196,138,77,.22) !important;
-    border-radius:8px !important;
-    box-shadow:0 0 0 3px rgba(196,138,77,.12) !important;
-    transition:background .25s ease, box-shadow .25s ease !important;
-  }
+<!-- CEN Bridge: Journey Explorer → CEN Bible 2.0 -->
+<style id="cen-bridge-style">
+.verse.cen-bridge-target{
+  background:rgba(196,138,77,.24) !important;
+  border-radius:9px !important;
+  outline:2px solid rgba(146,91,40,.48) !important;
+  outline-offset:2px !important;
+  box-shadow:0 0 0 5px rgba(196,138,77,.10) !important;
+}
+#cenBridgeBanner{
+  position:fixed;left:12px;right:12px;top:calc(58px + env(safe-area-inset-top));
+  z-index:260;display:none;align-items:center;justify-content:space-between;gap:8px;
+  padding:9px 11px;border:1px solid #d9c5aa;border-radius:13px;
+  background:rgba(255,250,242,.97);color:#5e472d;box-shadow:0 5px 18px rgba(70,45,22,.16);
+  font-family:var(--uiFont);font-size:12px;font-weight:800;
+}
+#cenBridgeBanner.show{display:flex}
+#cenBridgeBanner button{padding:6px 9px;border-radius:9px;background:#ead8c0;color:#5e472d;font-size:11px;font-weight:900}
 </style>
-<script id="cen-journey-deeplink-script">
+
+<div id="cenBridgeBanner">
+  <span id="cenBridgeBannerText">여정에서 선택한 말씀입니다.</span>
+  <button id="cenBridgeReturnBtn" type="button">여정으로 돌아가기</button>
+</div>
+
+<script id="cen-bridge-script">
 (function(){
   "use strict";
 
@@ -10118,130 +10134,138 @@ function showOverviewImagePlaceholder(img){
     "살전":"데살로니가전서","살후":"데살로니가후서","딤전":"디모데전서",
     "딤후":"디모데후서","딛":"디도서","몬":"빌레몬서","히":"히브리서",
     "약":"야고보서","벧전":"베드로전서","벧후":"베드로후서",
-    "요일":"요한일서","요이":"요한이서","요삼":"요한삼서",
-    "유":"유다서","계":"요한계시록"
+    "요일":"요한일서","요이":"요한이서","요삼":"요한삼서","유":"유다서","계":"요한계시록"
   };
 
   function parseRef(raw){
-    const cleaned = decodeURIComponent(raw || "")
-      .replace(/[－–—]/g, "-")
-      .replace(/[∼～]/g, "~")
-      .replace(/\s+/g, " ")
-      .trim();
+    const cleaned = decodeURIComponent(String(raw || ""))
+      .replace(/[－–—]/g, "-").replace(/[∼～]/g, "~").replace(/\s+/g, " ").trim();
 
-    const m = cleaned.match(/^(.+?)\s*(\d+)\s*:\s*(\d+)(?:\s*[~\-]\s*(?:(\d+)\s*:\s*)?(\d+))?/);
+    const m = cleaned.match(/^(.+?)\s+(\d+)\s*:\s*(\d+)(?:\s*[~\-]\s*(?:(\d+)\s*:\s*)?(\d+))?$/)
+      || cleaned.match(/^([가-힣]+?)\s*(\d+)\s*:\s*(\d+)(?:\s*[~\-]\s*(?:(\d+)\s*:\s*)?(\d+))?$/);
+
     if(!m) return null;
 
     const rawBook = m[1].trim();
     return {
       book: BOOK_ALIASES[rawBook] || rawBook,
-      chapter: Number(m[2]),
+      chapter: String(Number(m[2])),
       verse: Number(m[3]),
-      endChapter: Number(m[4] || m[2]),
+      endChapter: String(Number(m[4] || m[2])),
       endVerse: Number(m[5] || m[3]),
       original: cleaned
     };
   }
 
   function verseNumber(el){
-    if(!el) return NaN;
-    const values = [
-      el.dataset && el.dataset.verse,
-      el.dataset && el.dataset.v,
-      el.dataset && el.dataset.num,
-      el.getAttribute && el.getAttribute("data-verse"),
-      el.getAttribute && el.getAttribute("data-v")
-    ];
-    for(const value of values){
-      const n = Number(value);
-      if(Number.isFinite(n) && n > 0) return n;
-    }
-    const numEl = el.querySelector(".vnum,.verse-num,.verseNumber,.num,sup");
-    const text = ((numEl && numEl.textContent) || "").trim();
-    const mm = text.match(/^(\d+)/);
-    return mm ? Number(mm[1]) : NaN;
+    const n = Number(el && (el.dataset.v || el.dataset.verse || el.dataset.num));
+    if(Number.isFinite(n)) return n;
+    const num = el && el.querySelector(".vnum");
+    const m = String(num ? num.textContent : "").match(/\d+/);
+    return m ? Number(m[0]) : NaN;
   }
 
-  function highlight(ref){
-    const items = Array.from(document.querySelectorAll("#content .verse,.verse"))
-      .map(el => ({el, n: verseNumber(el)}))
-      .filter(x => Number.isFinite(x.n));
+  function clearTargets(){
+    document.querySelectorAll(".cen-bridge-target").forEach(el => el.classList.remove("cen-bridge-target"));
+  }
 
-    const targets = items.filter(x => x.n >= ref.verse && x.n <= ref.endVerse);
+  function highlightRange(ref){
+    clearTargets();
+    const targets = Array.from(document.querySelectorAll("#content .verse")).filter(el => {
+      const n = verseNumber(el);
+      return Number.isFinite(n) && n >= ref.verse && n <= ref.endVerse;
+    });
     if(!targets.length) return false;
 
-    targets.forEach(x => x.el.classList.add("cen-journey-target"));
-    targets[0].el.scrollIntoView({behavior:"smooth", block:"center"});
-
-    setTimeout(() => {
-      targets.forEach(x => x.el.classList.remove("cen-journey-target"));
-    }, 5000);
-
+    targets.forEach(el => el.classList.add("cen-bridge-target"));
+    targets[0].scrollIntoView({behavior:"smooth", block:"center"});
+    setTimeout(clearTargets, 7000);
     return true;
   }
 
-  async function openJourneyReference(){
+  function showBanner(ref, returnTo){
+    const banner = document.getElementById("cenBridgeBanner");
+    const text = document.getElementById("cenBridgeBannerText");
+    const button = document.getElementById("cenBridgeReturnBtn");
+    if(!banner || !text || !button) return;
+
+    text.textContent = ref.original + " · 여정에서 선택한 말씀";
+    button.style.display = returnTo ? "" : "none";
+    if(returnTo) button.onclick = function(){ location.href = returnTo; };
+    banner.classList.add("show");
+    setTimeout(() => banner.classList.remove("show"), 6500);
+  }
+
+  async function waitReady(){
+    for(let i=0;i<100;i++){
+      try{
+        if(typeof state !== "undefined" && typeof slots !== "undefined" &&
+           typeof activeSlot !== "undefined" && typeof loadChapter === "function" &&
+           typeof loadVersion === "function" && typeof saveSlots === "function"){
+          return true;
+        }
+      }catch(_){}
+      await new Promise(r => setTimeout(r,120));
+    }
+    return false;
+  }
+
+  async function openBibleReference(rawRef, options){
+    const ref = typeof rawRef === "string" ? parseRef(rawRef) : rawRef;
+    if(!ref) throw new Error("성경 장절 형식을 읽지 못했습니다.");
+    if(!(await waitReady())) throw new Error("성경 읽기 엔진 준비 실패");
+    if(typeof books !== "undefined" && !books.includes(ref.book)) throw new Error("성경 이름 오류: " + ref.book);
+
+    state.book = ref.book;
+    state.chap = ref.chapter;
+
+    if(slots && slots[activeSlot]){
+      slots[activeSlot].book = ref.book;
+      slots[activeSlot].chap = ref.chapter;
+      state = slots[activeSlot];
+    }
+
+    await loadVersion(state.version);
+    saveSlots();
+    await loadChapter(false);
+    setMenus(true);
+
+    for(let i=0;i<30;i++){
+      if(highlightRange(ref)) break;
+      await new Promise(r => setTimeout(r,120));
+    }
+
+    showBanner(ref, options && options.returnTo ? options.returnTo : "");
+    if(typeof toast === "function"){
+      try{ toast(ref.original + " 말씀으로 이동했습니다."); }catch(_){}
+    }
+    return true;
+  }
+
+  window.CEN = window.CEN || {};
+  window.CEN.openBible = function(ref, options){
+    return openBibleReference(ref, options || {});
+  };
+
+  async function handleIncoming(){
     const params = new URLSearchParams(location.search);
     const raw = params.get("ref");
     if(!raw) return;
-
-    const ref = parseRef(raw);
-    if(!ref) return;
-
-    let tries = 0;
-    while(
-      (typeof window.loadChapter !== "function" || typeof window.state === "undefined") &&
-      tries < 60
-    ){
-      await new Promise(r => setTimeout(r, 150));
-      tries++;
-    }
-
-    if(typeof window.loadChapter !== "function" || typeof window.state === "undefined") return;
-
     try{
-      window.state.book = ref.book;
-      window.state.chap = ref.chapter;
-
-      if(typeof window.slots !== "undefined" &&
-         typeof window.activeSlot !== "undefined" &&
-         window.slots && window.slots[window.activeSlot]){
-        window.slots[window.activeSlot].book = ref.book;
-        window.slots[window.activeSlot].chap = ref.chapter;
-        window.state = window.slots[window.activeSlot];
-      }
-
-      if(typeof window.saveSlots === "function"){
-        try{ window.saveSlots(); }catch(_){}
-      }
-
-      await window.loadChapter(false);
-
-      if(typeof window.renderTabs === "function"){
-        try{ window.renderTabs(); }catch(_){}
-      }
-      if(typeof window.setMenus === "function"){
-        try{ window.setMenus(true); }catch(_){}
-      }
-
-      let count = 0;
-      const timer = setInterval(() => {
-        count++;
-        if(highlight(ref) || count > 25){
-          clearInterval(timer);
-          if(typeof window.toast === "function"){
-            try{ window.toast(ref.original + " 말씀으로 이동했습니다."); }catch(_){}
-          }
-        }
-      }, 160);
-
+      await openBibleReference(raw, {
+        source: params.get("source") || "",
+        returnTo: params.get("returnTo") || ""
+      });
     }catch(err){
-      console.error("[CEN Journey deeplink]", err);
+      console.error("[CEN Bridge]", err);
+      if(typeof toast === "function"){
+        try{ toast("말씀 이동에 실패했습니다."); }catch(_){}
+      }
     }
   }
 
   window.addEventListener("load", function(){
-    setTimeout(openJourneyReference, 500);
+    setTimeout(handleIncoming, 650);
   });
 })();
 </script>
