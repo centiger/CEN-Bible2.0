@@ -2959,21 +2959,39 @@ function hideLoader() {
   }
 }
 
+async function cenGetBibleCompressedResponse(id) {
+  const baseUrl = './data/compressed/' + id + '.gz';
+  const fetchUrl = baseUrl + '?v=offline-v2';
+  try {
+    const res = await fetch(fetchUrl, { cache:'force-cache' });
+    if (res && res.ok) return res;
+  } catch (e) {
+    console.warn('[CEN offline] network/service-worker fetch failed:', id, e);
+  }
+
+  // 서비스워커 응답이 실패해도 Cache Storage에 저장된 원본을 직접 찾는다.
+  if ('caches' in window) {
+    const cached = await caches.match(baseUrl, { ignoreSearch:true });
+    if (cached) return cached;
+  }
+  throw new Error('오프라인 성경 데이터가 저장되지 않았습니다: ' + id);
+}
+
 async function unzipTextFromScript(id) {
-  if(window.cenGetCachedText){
+  if (window.cenGetCachedText) {
     const cached = await window.cenGetCachedText(id);
-    if(cached) return cached;
+    if (cached) return cached;
   }
   if (!('DecompressionStream' in window)) {
     alert('이 브라우저는 압축 해제를 지원하지 않습니다. Chrome 또는 삼성인터넷 최신 버전으로 열어주세요.');
     throw new Error('DecompressionStream not supported');
   }
-  const url = './data/compressed/' + id + '.gz?v=fastload';
-  const res = await fetch(url, {cache:'force-cache'});
-  if (!res.ok) throw new Error('Failed to load compressed data: ' + id);
+
+  const res = await cenGetBibleCompressedResponse(id);
+  if (!res.body) throw new Error('성경 압축 데이터 본문을 읽을 수 없습니다: ' + id);
   const stream = res.body.pipeThrough(new DecompressionStream('gzip'));
   const txt = await new Response(stream).text();
-  if(window.cenSetCachedText) window.cenSetCachedText(id, txt);
+  if (window.cenSetCachedText) await window.cenSetCachedText(id, txt);
   return txt;
 }
 
@@ -7853,20 +7871,89 @@ function resetMemoSearch(){
 
 <script id="cen-pwa-final-script">
 (function() {
-  var APP_VERSION = "1.2.7-offline-core";
+  var APP_VERSION = "1.2.8-offline-core-v2";
   window.CEN_APP_VERSION = APP_VERSION;
+  var READY_KEY = 'cenOfflineBibleReadyV2';
+
+  function setOfflineReady(ok, detail) {
+    try {
+      if (ok) localStorage.setItem(READY_KEY, JSON.stringify({ ok:true, at:Date.now(), detail:detail || null }));
+      else localStorage.removeItem(READY_KEY);
+    } catch(e) {}
+    window.CEN_OFFLINE_BIBLE_READY = !!ok;
+  }
+
+  function requestSW(sw, type, timeoutMs) {
+    return new Promise(function(resolve) {
+      if (!sw) return resolve({ ok:false, error:'서비스워커가 활성화되지 않았습니다.' });
+      var channel = new MessageChannel();
+      var done = false;
+      var timer = setTimeout(function() {
+        if (done) return;
+        done = true;
+        resolve({ ok:false, error:'오프라인 성경 저장 확인 시간이 초과되었습니다.' });
+      }, timeoutMs || 90000);
+      channel.port1.onmessage = function(event) {
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
+        resolve(event.data || { ok:false });
+      };
+      try {
+        sw.postMessage({ type:type }, [channel.port2]);
+      } catch(e) {
+        clearTimeout(timer);
+        resolve({ ok:false, error:String(e && e.message || e) });
+      }
+    });
+  }
+
+  async function prepareOfflineBible(reg) {
+    try {
+      var sw = navigator.serviceWorker.controller || reg.active || reg.waiting || reg.installing;
+      var result = await requestSW(sw, 'CEN_CACHE_CORE', 120000);
+      setOfflineReady(!!result.ok, result.detail || null);
+      if (!result.ok) console.warn('[CEN offline] preparation failed:', result);
+      return result;
+    } catch(e) {
+      setOfflineReady(false);
+      console.warn('[CEN offline] preparation error:', e);
+      return { ok:false, error:String(e && e.message || e) };
+    }
+  }
+
+  window.cenVerifyOfflineBible = async function() {
+    if (!("serviceWorker" in navigator)) return { ok:false, error:'서비스워커 미지원 브라우저' };
+    var reg = await navigator.serviceWorker.ready;
+    var sw = navigator.serviceWorker.controller || reg.active;
+    var result = await requestSW(sw, 'CEN_VERIFY_OFFLINE', 30000);
+    setOfflineReady(!!result.ok, result.detail || null);
+    return result;
+  };
+
+  window.cenPrepareOfflineBible = async function() {
+    if (!("serviceWorker" in navigator)) return { ok:false, error:'서비스워커 미지원 브라우저' };
+    var reg = await navigator.serviceWorker.ready;
+    return prepareOfflineBible(reg);
+  };
 
   if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.addEventListener('message', function(event) {
+      var data = event.data || {};
+      if (data.type === 'CEN_OFFLINE_READY' || data.type === 'CEN_OFFLINE_STATUS') {
+        setOfflineReady(!!data.ok || data.type === 'CEN_OFFLINE_READY', data.detail || null);
+      }
+    });
+
     window.addEventListener("load", function() {
-      navigator.serviceWorker.register("./service-worker.js").then(function(reg) {
-        try { reg.update(); } catch(e) {}
+      navigator.serviceWorker.register("./service-worker.js").then(async function(reg) {
+        try { await reg.update(); } catch(e) {}
         try {
-          var sw = reg.active || reg.waiting || reg.installing;
-          if (sw) sw.postMessage({ type: "CEN_CACHE_CORE" });
-          if (navigator.serviceWorker.controller) {
-            navigator.serviceWorker.controller.postMessage({ type: "CEN_CACHE_CORE" });
-          }
-        } catch(e) {}
+          await navigator.serviceWorker.ready;
+          await prepareOfflineBible(reg);
+        } catch(e) {
+          console.warn('[CEN offline] ready failed:', e);
+        }
         reg.addEventListener("updatefound", function() {
           var nw = reg.installing;
           if (!nw) return;
@@ -7877,9 +7964,11 @@ function resetMemoSearch(){
           });
         });
       }).catch(function(err) {
+        setOfflineReady(false);
         console.warn("ServiceWorker registration failed:", err);
       });
     });
+
     var refreshing = false;
     navigator.serviceWorker.addEventListener("controllerchange", function() {
       if (refreshing) return;
