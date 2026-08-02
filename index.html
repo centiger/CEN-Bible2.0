@@ -10816,6 +10816,84 @@ function showOverviewImagePlaceholder(img){
 })();
 </script>
 
+
+
+<script id="cen-search-fullscreen-menu-recovery-final">
+(function(){
+  function getPanel(){ return document.getElementById('searchPanel'); }
+
+  function restoreMainScreen(){
+    var p=getPanel();
+    document.documentElement.classList.remove('cenSearchOpen');
+    document.body.classList.remove('cenSearchOpen');
+    if(p){
+      p.classList.remove('cenTrueFullscreen','cenHasResults');
+      [
+        'display','position','inset','top','right','bottom','left','width','height',
+        'min-height','max-height','margin','padding','z-index','overflow','transform'
+      ].forEach(function(name){ p.style.removeProperty(name); });
+      p.style.setProperty('display','none','important');
+    }
+    var top=document.getElementById('topMenu');
+    var bottom=document.getElementById('bottomTabs');
+    var reader=document.getElementById('readerWrap');
+    if(top){ top.style.removeProperty('display'); top.classList.add('show'); }
+    if(bottom){ bottom.style.removeProperty('display'); bottom.classList.add('show'); }
+    if(reader){ reader.style.removeProperty('display'); reader.style.removeProperty('pointer-events'); }
+    if(typeof menusVisible!=='undefined') menusVisible=true;
+  }
+
+  function activateSearchFullscreen(){
+    var p=getPanel(); if(!p) return;
+    if(p.parentElement!==document.body) document.body.appendChild(p);
+    document.documentElement.classList.add('cenSearchOpen');
+    document.body.classList.add('cenSearchOpen');
+    p.classList.add('cenTrueFullscreen');
+    p.style.setProperty('display','flex','important');
+    p.style.setProperty('position','fixed','important');
+    p.style.setProperty('inset','0','important');
+    p.style.setProperty('width','100%','important');
+    p.style.setProperty('height',(window.visualViewport?Math.round(window.visualViewport.height)+'px':'100dvh'),'important');
+    p.style.setProperty('z-index','2147483646','important');
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    /* 이전 전체화면 패치가 남긴 투명 오버레이를 시작 시 제거 */
+    restoreMainScreen();
+
+    var originalOpen=window.openSearch;
+    window.openSearch=function(e){
+      if(e && e.stopPropagation) e.stopPropagation();
+      var result;
+      if(typeof originalOpen==='function') result=originalOpen.apply(this,arguments);
+      activateSearchFullscreen();
+      return result;
+    };
+
+    var originalClose=window.closeModal;
+    window.closeModal=function(id){
+      var result;
+      if(typeof originalClose==='function') result=originalClose.apply(this,arguments);
+      if(id==='searchPanel') restoreMainScreen();
+      return result;
+    };
+
+    var p=getPanel();
+    if(p){
+      p.addEventListener('click',function(e){
+        if(e.target && e.target.closest && e.target.closest('.xbtn')){
+          setTimeout(restoreMainScreen,0);
+        }
+      },true);
+    }
+  });
+
+  window.addEventListener('pageshow',function(){
+    var p=getPanel();
+    if(!p || getComputedStyle(p).display==='none') restoreMainScreen();
+  });
+})();
+</script>
 </body>
 </html>
 
