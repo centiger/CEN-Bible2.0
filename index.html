@@ -2567,6 +2567,25 @@ body.scoreViewerOpen{
 #searchResult .searchTestamentSection .searchItem{padding:12px 11px;}
 #searchResult .searchTestamentEmpty{padding:18px 12px;text-align:center;color:#8a7865;font-size:14px;}
 </style>
+
+<style id="cen-search-tabs-filter-style">
+#searchResult .searchResultToolbar{position:sticky;top:0;z-index:20;background:#fffaf2;padding:8px 0 7px;border-bottom:1px solid #eadcc9;}
+#searchResult .searchTestamentTabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:4px 0 8px;}
+#searchResult .searchTestamentTab{height:44px;border:1px solid #d8c3a5;border-radius:13px;background:#fffdf8;color:#70583a;font-weight:900;font-size:15px;}
+#searchResult .searchTestamentTab.active{background:#d8c3a5;color:#3f2e1f;border-color:#c4a47d;box-shadow:0 2px 8px rgba(80,55,30,.12);}
+#searchResult .searchTestamentTab.new.active{background:#d9e7df;color:#315441;border-color:#b9d1c4;}
+#searchResult .searchBookFilter{display:flex;gap:6px;overflow-x:auto;white-space:nowrap;padding:1px 0 5px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;}
+#searchResult .searchBookFilter button{flex:0 0 auto;padding:7px 10px;border-radius:999px;border:1px solid #dfcfba;background:#fffdf8;color:#6d4f31;font-size:12px;font-weight:800;}
+#searchResult .searchBookFilter button.active{background:#70583a;color:#fffaf2;border-color:#70583a;}
+#searchResult .searchTestamentPane{display:none;}
+#searchResult .searchTestamentPane.active{display:block;}
+#searchResult .searchBookGroup{margin:10px 0 14px;border:1px solid #eadcc9;border-radius:13px;overflow:hidden;background:#fffdf8;}
+#searchResult .searchBookGroupHead{position:sticky;top:101px;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#f5eadc;border-bottom:1px solid #eadcc9;color:#5e472d;font-weight:900;}
+#searchResult .newTestamentPane .searchBookGroupHead{background:#edf4f0;color:#3f5d4d;}
+#searchResult .searchBookGroupHead span{font-size:11px;padding:3px 7px;border-radius:999px;background:rgba(255,255,255,.75);}
+#searchResult .searchEmptyPane{padding:26px 10px;text-align:center;color:#8a7865;}
+#searchResult .searchTopBtn{position:sticky;bottom:8px;float:right;margin:8px 2px 14px;padding:8px 12px;border-radius:999px;background:#70583a;color:#fffaf2;border:0;font-weight:900;box-shadow:0 3px 10px rgba(0,0,0,.18);}
+</style>
 </head>
 <body>
 <div id="installTip">홈 화면에 추가하면 주소창이 줄어들어 앱처럼 사용할 수 있습니다.<button onclick="hideInstallTip()">닫기</button></div>
@@ -10191,13 +10210,11 @@ function showOverviewImagePlaceholder(img){
           var t = String(v.t || '');
           var ref = b + ' ' + c + ':' + v.v;
           if (t.indexOf(q) !== -1 || ref.indexOf(q) !== -1) {
-            var standalone = hasStandaloneTerm(t, q);
-            list.push({book:b, chap:String(c), verse:String(v.v), text:t, bi:bi, standalone:standalone});
+            list.push({book:b, chap:String(c), verse:String(v.v), text:t, bi:bi});
           }
         });
       });
     });
-    // 검색 결과는 정확 일치 여부와 관계없이 성경 66권 순서대로 정렬합니다.
     list.sort(function(a,b){
       if (a.bi !== b.bi) return a.bi - b.bi;
       if (Number(a.chap) !== Number(b.chap)) return Number(a.chap) - Number(b.chap);
@@ -10209,41 +10226,128 @@ function showOverviewImagePlaceholder(img){
 
     r.insertAdjacentHTML('beforeend',
       '<p class="searchSummary"><b>' + list.length + '</b>개 검색됨 · 전체 결과 표시</p>' +
-      '<p class="searchOrderHint">구약을 먼저, 신약을 이어서 성경 순서대로 표시합니다.</p>'
+      '<p class="searchOrderHint">구약·신약 탭을 누르고, 성경 이름을 선택하면 해당 결과만 빠르게 볼 수 있습니다.</p>'
     );
 
-    function appendSection(title, items, cls){
-      var section = document.createElement('section');
-      section.className = 'searchTestamentSection ' + cls;
+    var toolbar = document.createElement('div');
+    toolbar.className = 'searchResultToolbar';
+    toolbar.innerHTML =
+      '<div class="searchTestamentTabs">' +
+        '<button type="button" class="searchTestamentTab old active" data-pane="old">구약 <span>(' + oldList.length + ')</span></button>' +
+        '<button type="button" class="searchTestamentTab new" data-pane="new">신약 <span>(' + newList.length + ')</span></button>' +
+      '</div>' +
+      '<div class="searchBookFilter" id="searchBookFilter"></div>';
+    r.appendChild(toolbar);
 
-      var head = document.createElement('div');
-      head.className = 'searchTestamentHead';
-      head.innerHTML = '<strong>' + title + '</strong><span>' + items.length + '개</span>';
-      section.appendChild(head);
+    var panes = document.createElement('div');
+    panes.className = 'searchPanes';
+    r.appendChild(panes);
 
-      if (!items.length) {
-        var empty = document.createElement('div');
-        empty.className = 'searchTestamentEmpty';
-        empty.textContent = '검색 결과가 없습니다.';
-        section.appendChild(empty);
-      } else {
-        var frag = document.createDocumentFragment();
-        items.forEach(function(item){
-          var d = document.createElement('div');
-          d.className = 'searchItem';
-          d.innerHTML = '<b>' + item.book + ' ' + item.chap + ':' + item.verse + '</b><br>' + highlightTerm(item.text, q);
-          d.onclick = function(){ jumpToVerse(item.book, item.chap, item.verse); };
-          frag.appendChild(d);
-        });
-        section.appendChild(frag);
-      }
-      r.appendChild(section);
+    function groupByBook(items){
+      var groups = [];
+      var map = {};
+      items.forEach(function(item){
+        if (!map[item.book]) {
+          map[item.book] = {book:item.book, items:[]};
+          groups.push(map[item.book]);
+        }
+        map[item.book].items.push(item);
+      });
+      return groups;
     }
 
-    appendSection('구약', oldList, 'oldTestament');
-    appendSection('신약', newList, 'newTestament');
-  };
-})();
+    function makePane(type, items){
+      var pane = document.createElement('div');
+      pane.className = 'searchTestamentPane ' + type + 'TestamentPane' + (type === 'old' ? ' active' : '');
+      pane.dataset.pane = type;
+      var groups = groupByBook(items);
+      if (!groups.length) {
+        pane.innerHTML = '<div class="searchEmptyPane">검색 결과가 없습니다.</div>';
+      } else {
+        groups.forEach(function(group){
+          var sec = document.createElement('section');
+          sec.className = 'searchBookGroup';
+          sec.dataset.book = group.book;
+          var head = document.createElement('div');
+          head.className = 'searchBookGroupHead';
+          head.innerHTML = '<strong>' + group.book + '</strong><span>' + group.items.length + '개</span>';
+          sec.appendChild(head);
+          var frag = document.createDocumentFragment();
+          group.items.forEach(function(item){
+            var d = document.createElement('div');
+            d.className = 'searchItem';
+            d.innerHTML = '<b>' + item.book + ' ' + item.chap + ':' + item.verse + '</b><br>' + highlightTerm(item.text, q);
+            d.onclick = function(){ jumpToVerse(item.book, item.chap, item.verse); };
+            frag.appendChild(d);
+          });
+          sec.appendChild(frag);
+          pane.appendChild(sec);
+        });
+        var topBtn = document.createElement('button');
+        topBtn.type = 'button';
+        topBtn.className = 'searchTopBtn';
+        topBtn.textContent = '↑ 위로';
+        topBtn.onclick = function(){
+          var panel = document.querySelector('#searchPanel .panel');
+          if (panel) panel.scrollTo({top:0, behavior:'smooth'});
+        };
+        pane.appendChild(topBtn);
+      }
+      panes.appendChild(pane);
+      return groups;
+    }
+
+    var groupsByType = {
+      old: makePane('old', oldList),
+      new: makePane('new', newList)
+    };
+
+    var activeType = 'old';
+    var filter = document.getElementById('searchBookFilter');
+
+    function renderBookFilter(type){
+      activeType = type;
+      filter.innerHTML = '';
+      var allBtn = document.createElement('button');
+      allBtn.type = 'button';
+      allBtn.className = 'active';
+      allBtn.textContent = '전체';
+      allBtn.onclick = function(){ applyBookFilter(type, '', allBtn); };
+      filter.appendChild(allBtn);
+      groupsByType[type].forEach(function(group){
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = group.book + ' ' + group.items.length;
+        b.onclick = function(){ applyBookFilter(type, group.book, b); };
+        filter.appendChild(b);
+      });
+      filter.scrollLeft = 0;
+    }
+
+    function applyBookFilter(type, book, btn){
+      filter.querySelectorAll('button').forEach(function(b){ b.classList.toggle('active', b === btn); });
+      var pane = panes.querySelector('[data-pane="' + type + '"]');
+      pane.querySelectorAll('.searchBookGroup').forEach(function(sec){
+        sec.style.display = (!book || sec.dataset.book === book) ? '' : 'none';
+      });
+      var panel = document.querySelector('#searchPanel .panel');
+      if (panel) {
+        var y = toolbar.offsetTop - 6;
+        panel.scrollTo({top:y, behavior:'smooth'});
+      }
+    }
+
+    toolbar.querySelectorAll('.searchTestamentTab').forEach(function(tab){
+      tab.onclick = function(){
+        var type = tab.dataset.pane;
+        toolbar.querySelectorAll('.searchTestamentTab').forEach(function(t){ t.classList.toggle('active', t === tab); });
+        panes.querySelectorAll('.searchTestamentPane').forEach(function(p){ p.classList.toggle('active', p.dataset.pane === type); });
+        renderBookFilter(type);
+      };
+    });
+
+    renderBookFilter('old');
+  };})();
 </script>
 
 
