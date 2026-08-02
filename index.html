@@ -10755,96 +10755,18 @@ function showOverviewImagePlaceholder(img){
 </script>
 
 
-<script id="cen-search-true-fullscreen-script">
+
+<script id="cen-search-true-fullscreen-stable">
 (function(){
   function panel(){ return document.getElementById('searchPanel'); }
-  function openFull(){
-    var p=panel(); if(!p) return;
-    /* 다른 컨테이너의 크기·변형 영향을 받지 않도록 body 직속으로 이동 */
-    if(p.parentElement !== document.body) document.body.appendChild(p);
-    document.documentElement.classList.add('cenSearchOpen');
-    document.body.classList.add('cenSearchOpen');
-    p.classList.add('cenTrueFullscreen');
-    p.style.setProperty('display','flex','important');
-    p.style.setProperty('position','fixed','important');
-    p.style.setProperty('inset','0','important');
-    p.style.setProperty('width','100%','important');
-    p.style.setProperty('height',(window.visualViewport ? window.visualViewport.height+'px' : '100dvh'),'important');
-    p.style.setProperty('z-index','2147483646','important');
-  }
-  function closeFull(){
-    var p=panel();
-    document.documentElement.classList.remove('cenSearchOpen');
-    document.body.classList.remove('cenSearchOpen');
-    if(p){
-      p.classList.remove('cenTrueFullscreen','cenHasResults');
-      p.style.removeProperty('height');
-    }
-  }
-  function syncHeight(){
+  function setViewportHeight(){
     var p=panel();
     if(!p || !p.classList.contains('cenTrueFullscreen')) return;
-    var h=window.visualViewport ? window.visualViewport.height : window.innerHeight;
-    p.style.setProperty('height',Math.round(h)+'px','important');
+    var h=(window.visualViewport && window.visualViewport.height) || window.innerHeight;
+    p.style.setProperty('height', Math.round(h)+'px', 'important');
   }
-  document.addEventListener('click',function(e){
-    var b=e.target && e.target.closest && e.target.closest('#searchBtn');
-    if(b) setTimeout(openFull,0);
-    var x=e.target && e.target.closest && e.target.closest('#searchPanel .xbtn');
-    if(x) setTimeout(closeFull,0);
-  },true);
-  document.addEventListener('click',function(e){
-    if(e.target && e.target.closest && e.target.closest('#searchPanel .settingBtns button:first-child')){
-      setTimeout(function(){ var p=panel(); if(p) p.classList.add('cenHasResults'); },30);
-    }
-  },true);
-  var oldClose=window.closeModal;
-  window.addEventListener('DOMContentLoaded',function(){
-    var p=panel();
-    if(p){
-      new MutationObserver(function(){
-        var shown=getComputedStyle(p).display!=='none';
-        if(shown) openFull(); else closeFull();
-      }).observe(p,{attributes:true,attributeFilter:['style','class']});
-    }
-  });
-  if(window.visualViewport){
-    window.visualViewport.addEventListener('resize',syncHeight);
-    window.visualViewport.addEventListener('scroll',syncHeight);
-  }
-  window.addEventListener('resize',syncHeight);
-})();
-</script>
-
-
-
-<script id="cen-search-fullscreen-menu-recovery-final">
-(function(){
-  function getPanel(){ return document.getElementById('searchPanel'); }
-
-  function restoreMainScreen(){
-    var p=getPanel();
-    document.documentElement.classList.remove('cenSearchOpen');
-    document.body.classList.remove('cenSearchOpen');
-    if(p){
-      p.classList.remove('cenTrueFullscreen','cenHasResults');
-      [
-        'display','position','inset','top','right','bottom','left','width','height',
-        'min-height','max-height','margin','padding','z-index','overflow','transform'
-      ].forEach(function(name){ p.style.removeProperty(name); });
-      p.style.setProperty('display','none','important');
-    }
-    var top=document.getElementById('topMenu');
-    var bottom=document.getElementById('bottomTabs');
-    var reader=document.getElementById('readerWrap');
-    if(top){ top.style.removeProperty('display'); top.classList.add('show'); }
-    if(bottom){ bottom.style.removeProperty('display'); bottom.classList.add('show'); }
-    if(reader){ reader.style.removeProperty('display'); reader.style.removeProperty('pointer-events'); }
-    if(typeof menusVisible!=='undefined') menusVisible=true;
-  }
-
-  function activateSearchFullscreen(){
-    var p=getPanel(); if(!p) return;
+  function openFull(){
+    var p=panel(); if(!p) return;
     if(p.parentElement!==document.body) document.body.appendChild(p);
     document.documentElement.classList.add('cenSearchOpen');
     document.body.classList.add('cenSearchOpen');
@@ -10853,47 +10775,62 @@ function showOverviewImagePlaceholder(img){
     p.style.setProperty('position','fixed','important');
     p.style.setProperty('inset','0','important');
     p.style.setProperty('width','100%','important');
-    p.style.setProperty('height',(window.visualViewport?Math.round(window.visualViewport.height)+'px':'100dvh'),'important');
+    p.style.setProperty('max-width','none','important');
+    p.style.setProperty('max-height','none','important');
     p.style.setProperty('z-index','2147483646','important');
+    setViewportHeight();
+  }
+  function closeFull(){
+    var p=panel();
+    document.documentElement.classList.remove('cenSearchOpen');
+    document.body.classList.remove('cenSearchOpen');
+    if(!p) return;
+    p.classList.remove('cenTrueFullscreen','cenHasResults','show');
+    ['position','inset','top','right','bottom','left','width','height','max-width','max-height','z-index'].forEach(function(k){
+      p.style.removeProperty(k);
+    });
+    p.style.setProperty('display','none');
   }
 
-  document.addEventListener('DOMContentLoaded',function(){
-    /* 이전 전체화면 패치가 남긴 투명 오버레이를 시작 시 제거 */
-    restoreMainScreen();
-
-    var originalOpen=window.openSearch;
+  /* 기존 함수만 감싸고, 앱 시작 시에는 화면 상태를 건드리지 않는다. */
+  var originalOpenSearch=window.openSearch;
+  if(typeof originalOpenSearch==='function'){
     window.openSearch=function(e){
-      if(e && e.stopPropagation) e.stopPropagation();
-      var result;
-      if(typeof originalOpen==='function') result=originalOpen.apply(this,arguments);
-      activateSearchFullscreen();
+      var result=originalOpenSearch.apply(this,arguments);
+      openFull();
       return result;
     };
-
-    var originalClose=window.closeModal;
+  }
+  var originalCloseModal=window.closeModal;
+  if(typeof originalCloseModal==='function'){
     window.closeModal=function(id){
-      var result;
-      if(typeof originalClose==='function') result=originalClose.apply(this,arguments);
-      if(id==='searchPanel') restoreMainScreen();
+      var result=originalCloseModal.apply(this,arguments);
+      if(id==='searchPanel') closeFull();
       return result;
     };
+  }
 
-    var p=getPanel();
-    if(p){
-      p.addEventListener('click',function(e){
-        if(e.target && e.target.closest && e.target.closest('.xbtn')){
-          setTimeout(restoreMainScreen,0);
-        }
-      },true);
-    }
-  });
+  document.addEventListener('click',function(e){
+    var searchButton=e.target && e.target.closest && e.target.closest('#searchBtn');
+    if(searchButton) setTimeout(openFull,0);
+    var searchRun=e.target && e.target.closest && e.target.closest('#searchPanel .settingBtns button:first-child');
+    if(searchRun) setTimeout(function(){ var p=panel(); if(p) p.classList.add('cenHasResults'); },20);
+  },true);
 
+  if(window.visualViewport){ window.visualViewport.addEventListener('resize',setViewportHeight); }
+  window.addEventListener('resize',setViewportHeight);
   window.addEventListener('pageshow',function(){
-    var p=getPanel();
-    if(!p || getComputedStyle(p).display==='none') restoreMainScreen();
+    var p=panel();
+    if(p && getComputedStyle(p).display==='none'){
+      document.documentElement.classList.remove('cenSearchOpen');
+      document.body.classList.remove('cenSearchOpen');
+      p.classList.remove('cenTrueFullscreen','cenHasResults');
+    }
   });
 })();
 </script>
+
+
 </body>
 </html>
 
