@@ -2795,6 +2795,185 @@ body.cenSearchOpen #installTip{
 }
 </style>
 
+
+<style id="cen-bible-quiz-hub-style">
+/* CEN Bible 2.0 - 성경퀴즈 독립 PWA 링크 허브 */
+#settingsSheet .bibleQuizMenuButtons{
+  grid-template-columns:1fr !important;
+}
+
+#bibleQuizHubPanel{
+  z-index:2147483645 !important;
+  padding:0 !important;
+  align-items:stretch !important;
+  justify-content:stretch !important;
+  background:#fbf6ee !important;
+}
+#bibleQuizHubPanel.show{
+  display:flex !important;
+}
+#bibleQuizHubPanel .bibleQuizHubPanel{
+  width:100vw !important;
+  height:100vh !important;
+  height:100dvh !important;
+  max-width:none !important;
+  max-height:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  overflow:hidden !important;
+  display:flex !important;
+  flex-direction:column !important;
+  background:#fbf6ee !important;
+}
+#bibleQuizHubPanel .bibleQuizHubHead{
+  flex:0 0 auto !important;
+  margin:0 !important;
+  padding:calc(10px + env(safe-area-inset-top)) 14px 10px !important;
+  min-height:64px !important;
+  background:linear-gradient(180deg,#fbf6ee 0%,#f4e7d6 100%) !important;
+  border-bottom:1px solid #e1d0bb !important;
+}
+#bibleQuizHubPanel .bibleQuizHubHead h3{
+  margin:0 !important;
+  color:#5b4632 !important;
+  font-size:21px !important;
+  font-weight:900 !important;
+}
+#bibleQuizHubPanel .bibleQuizHubSub{
+  margin-top:4px;
+  color:#806b55;
+  font-size:12px;
+  line-height:1.35;
+}
+#bibleQuizHubPanel .bibleQuizHubScroll{
+  flex:1 1 auto;
+  min-height:0;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  padding:14px 12px calc(28px + env(safe-area-inset-bottom));
+}
+#bibleQuizHubPanel .bibleQuizTestament{
+  border:1px solid #e2d3c1;
+  border-radius:18px;
+  overflow:hidden;
+  background:#fffdf8;
+  margin:0 auto 16px;
+  max-width:860px;
+  box-shadow:0 3px 12px rgba(91,70,50,.07);
+}
+#bibleQuizHubPanel .bibleQuizTestamentTitle{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:12px 14px;
+  border-bottom:1px solid #e5d7c5;
+  background:#efe0cd;
+  color:#5b4632;
+}
+#bibleQuizHubPanel .bibleQuizNT .bibleQuizTestamentTitle{
+  background:#e5efea;
+  color:#405b4d;
+  border-bottom-color:#ceddd5;
+}
+#bibleQuizHubPanel .bibleQuizTestamentTitle strong{
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:-.03em;
+}
+#bibleQuizHubPanel .bibleQuizTestamentTitle span{
+  font-size:11px;
+  font-weight:900;
+  padding:4px 8px;
+  border-radius:999px;
+  background:rgba(255,255,255,.72);
+}
+#bibleQuizHubPanel .bibleQuizBookGrid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:7px;
+  padding:11px;
+}
+#bibleQuizHubPanel .bibleQuizBookBtn{
+  min-width:0;
+  min-height:48px;
+  padding:7px 4px;
+  border:1px solid #dfcfba;
+  border-radius:12px;
+  background:#fffaf3;
+  color:#604a35;
+  font-size:12px;
+  font-weight:800;
+  line-height:1.18;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  letter-spacing:-.035em;
+}
+#bibleQuizHubPanel .bibleQuizBookBtn .quizState{
+  display:block;
+  font-size:9.5px;
+  font-weight:800;
+  color:#9a8168;
+  line-height:1;
+}
+#bibleQuizHubPanel .bibleQuizBookBtn.ready{
+  background:linear-gradient(180deg,#fff9ec 0%,#f5e3c7 100%);
+  border-color:#cdaa78;
+  color:#5a3e25;
+  box-shadow:0 2px 6px rgba(100,70,35,.10);
+}
+#bibleQuizHubPanel .bibleQuizBookBtn.ready .quizState{
+  color:#0f6b3a;
+}
+#bibleQuizHubPanel .bibleQuizNT .bibleQuizBookBtn.ready{
+  background:linear-gradient(180deg,#f8fcfa 0%,#deebe4 100%);
+  border-color:#aacbbb;
+  color:#365245;
+}
+#bibleQuizHubPanel .bibleQuizBookBtn.preparing{
+  opacity:.66;
+  background:#f5f0e8;
+  color:#7f7163;
+  border-style:dashed;
+}
+#bibleQuizHubPanel .bibleQuizBookBtn:active{
+  transform:translateY(1px);
+}
+#bibleQuizHubPanel .bibleQuizHubNote{
+  max-width:860px;
+  margin:0 auto;
+  padding:10px 12px;
+  border-radius:12px;
+  background:#f4eadc;
+  color:#76624e;
+  font-size:11.5px;
+  line-height:1.5;
+  text-align:center;
+}
+@media(max-width:430px){
+  #bibleQuizHubPanel .bibleQuizBookGrid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:6px;
+    padding:9px;
+  }
+  #bibleQuizHubPanel .bibleQuizBookBtn{
+    min-height:46px;
+    font-size:11.5px;
+    padding:6px 3px;
+  }
+}
+@media(min-width:700px){
+  #bibleQuizHubPanel .bibleQuizBookGrid{
+    grid-template-columns:repeat(6,minmax(0,1fr));
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="installTip">홈 화면에 추가하면 주소창이 줄어들어 앱처럼 사용할 수 있습니다.<button onclick="hideInstallTip()">닫기</button></div>
@@ -3051,6 +3230,13 @@ onclick="toggleBibleGroup(event, 'structureFlowGroup')">
         </div>
       </div>
 
+      <div class="bibleUnderstandingGroup collapsed">
+        <button class="bibleGroupToggle" type="button" onclick="toggleBibleGroup(event, 'bibleQuizGroup')">성경퀴즈</button>
+        <div id="bibleQuizGroup" class="bibleGroupButtons bibleQuizMenuButtons">
+          <button class="menu-btn bible-understanding-btn" onclick="openBibleQuizHub(event)">성경퀴즈</button>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -3111,6 +3297,43 @@ onclick="toggleBibleGroup(event, 'structureFlowGroup')">
     </div>
   </div>
 </div>
+
+<!-- CEN Bible 2.0 : 성경퀴즈 허브
+     중요: 각 권별 퀴즈는 CEN Bible 2.0 내부 폴더가 아닌 독립 PWA URL로 연결합니다. -->
+<div id="bibleQuizHubPanel" class="modal bibleQuizHubModal" aria-label="성경퀴즈">
+  <div class="panel bibleQuizHubPanel">
+    <div class="panelHead bibleQuizHubHead">
+      <div>
+        <h3>성경퀴즈</h3>
+        <div class="bibleQuizHubSub">성경 66권을 선택하여 각 권의 독립 퀴즈 PWA로 이동합니다.</div>
+      </div>
+      <button class="xbtn" onclick="closeBibleQuizHub(event)" aria-label="닫기">×</button>
+    </div>
+
+    <div class="bibleQuizHubScroll">
+      <section class="bibleQuizTestament bibleQuizOT">
+        <div class="bibleQuizTestamentTitle">
+          <strong>구약 성경퀴즈</strong>
+          <span>39권</span>
+        </div>
+        <div id="bibleQuizOTGrid" class="bibleQuizBookGrid"></div>
+      </section>
+
+      <section class="bibleQuizTestament bibleQuizNT">
+        <div class="bibleQuizTestamentTitle">
+          <strong>신약 성경퀴즈</strong>
+          <span>27권</span>
+        </div>
+        <div id="bibleQuizNTGrid" class="bibleQuizBookGrid"></div>
+      </section>
+
+      <div class="bibleQuizHubNote">
+        완성된 성경은 독립 PWA로 이동하며, 아직 URL이 등록되지 않은 성경은 <b>준비중</b>으로 표시됩니다.
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="bibleMapPanel" class="modal"><div class="panel bookOverviewPanel"><div class="panelHead"><h3>성경지도</h3><button class="xbtn" onclick="closeModal('bibleMapPanel')">×</button></div><div class="bookOverviewReady"><b>성경의 공간을 따라가는 여행</b><p>성경의 무대와 이동 경로를 시대별로 탐험합니다.</p><a class="official-link" href="https://centiger.github.io/CEN-BibleMaps/">CEN Bible Maps 열기</a></div></div></div>
 <div id="bibleUnitPanel" class="modal"><div class="panel bookOverviewPanel"><div class="panelHead"><h3>성경단위</h3><button class="xbtn" onclick="closeModal('bibleUnitPanel')">×</button></div><div class="bookOverviewReady"><b>성경의 단위를 오늘의 감각으로</b><p>길이·무게·부피·화폐·시간을 현대 단위와 체감 예시로 이해합니다.</p><a class="official-link" href="https://centiger.github.io/CEN-BibleMeasures/">CEN Bible Measures 열기</a></div></div></div>
 
@@ -9735,6 +9958,245 @@ function openFestivalSacrificeMenu(event){
   location.href = "https://centiger.github.io/CEN-WorshipExplorer/";
 }
 
+
+/* ==========================================================
+   CEN Bible 2.0 - 성경퀴즈 허브
+   아키텍처 원칙:
+   - CEN Bible 2.0은 허브만 담당
+   - 각 권별 퀴즈는 별도의 독립 PWA
+   - 아래 CEN_BIBLE_QUIZ_URLS에 GitHub Pages URL만 등록하면 자동 활성화
+   ========================================================== */
+
+const CEN_BIBLE_QUIZ_BOOKS = [
+  {key:'genesis',name:'창세기',testament:'old'},
+  {key:'exodus',name:'출애굽기',testament:'old'},
+  {key:'leviticus',name:'레위기',testament:'old'},
+  {key:'numbers',name:'민수기',testament:'old'},
+  {key:'deuteronomy',name:'신명기',testament:'old'},
+  {key:'joshua',name:'여호수아',testament:'old'},
+  {key:'judges',name:'사사기',testament:'old'},
+  {key:'ruth',name:'룻기',testament:'old'},
+  {key:'1samuel',name:'사무엘상',testament:'old'},
+  {key:'2samuel',name:'사무엘하',testament:'old'},
+  {key:'1kings',name:'열왕기상',testament:'old'},
+  {key:'2kings',name:'열왕기하',testament:'old'},
+  {key:'1chronicles',name:'역대상',testament:'old'},
+  {key:'2chronicles',name:'역대하',testament:'old'},
+  {key:'ezra',name:'에스라',testament:'old'},
+  {key:'nehemiah',name:'느헤미야',testament:'old'},
+  {key:'esther',name:'에스더',testament:'old'},
+  {key:'job',name:'욥기',testament:'old'},
+  {key:'psalms',name:'시편',testament:'old'},
+  {key:'proverbs',name:'잠언',testament:'old'},
+  {key:'ecclesiastes',name:'전도서',testament:'old'},
+  {key:'songofsongs',name:'아가',testament:'old'},
+  {key:'isaiah',name:'이사야',testament:'old'},
+  {key:'jeremiah',name:'예레미야',testament:'old'},
+  {key:'lamentations',name:'예레미야애가',testament:'old'},
+  {key:'ezekiel',name:'에스겔',testament:'old'},
+  {key:'daniel',name:'다니엘',testament:'old'},
+  {key:'hosea',name:'호세아',testament:'old'},
+  {key:'joel',name:'요엘',testament:'old'},
+  {key:'amos',name:'아모스',testament:'old'},
+  {key:'obadiah',name:'오바댜',testament:'old'},
+  {key:'jonah',name:'요나',testament:'old'},
+  {key:'micah',name:'미가',testament:'old'},
+  {key:'nahum',name:'나훔',testament:'old'},
+  {key:'habakkuk',name:'하박국',testament:'old'},
+  {key:'zephaniah',name:'스바냐',testament:'old'},
+  {key:'haggai',name:'학개',testament:'old'},
+  {key:'zechariah',name:'스가랴',testament:'old'},
+  {key:'malachi',name:'말라기',testament:'old'},
+
+  {key:'matthew',name:'마태복음',testament:'new'},
+  {key:'mark',name:'마가복음',testament:'new'},
+  {key:'luke',name:'누가복음',testament:'new'},
+  {key:'john',name:'요한복음',testament:'new'},
+  {key:'acts',name:'사도행전',testament:'new'},
+  {key:'romans',name:'로마서',testament:'new'},
+  {key:'1corinthians',name:'고린도전서',testament:'new'},
+  {key:'2corinthians',name:'고린도후서',testament:'new'},
+  {key:'galatians',name:'갈라디아서',testament:'new'},
+  {key:'ephesians',name:'에베소서',testament:'new'},
+  {key:'philippians',name:'빌립보서',testament:'new'},
+  {key:'colossians',name:'골로새서',testament:'new'},
+  {key:'1thessalonians',name:'데살로니가전서',testament:'new'},
+  {key:'2thessalonians',name:'데살로니가후서',testament:'new'},
+  {key:'1timothy',name:'디모데전서',testament:'new'},
+  {key:'2timothy',name:'디모데후서',testament:'new'},
+  {key:'titus',name:'디도서',testament:'new'},
+  {key:'philemon',name:'빌레몬서',testament:'new'},
+  {key:'hebrews',name:'히브리서',testament:'new'},
+  {key:'james',name:'야고보서',testament:'new'},
+  {key:'1peter',name:'베드로전서',testament:'new'},
+  {key:'2peter',name:'베드로후서',testament:'new'},
+  {key:'1john',name:'요한일서',testament:'new'},
+  {key:'2john',name:'요한이서',testament:'new'},
+  {key:'3john',name:'요한삼서',testament:'new'},
+  {key:'jude',name:'유다서',testament:'new'},
+  {key:'revelation',name:'요한계시록',testament:'new'}
+];
+
+/* 독립 PWA URL 매핑
+   예:
+   galatians: 'https://centiger.github.io/CEN-Galatians-Quiz/',
+   1thessalonians: 'https://centiger.github.io/CEN-1Thessalonians-Quiz/'
+   실제 배포 URL을 여기에 넣으면 해당 권 버튼이 자동으로 활성화됩니다.
+*/
+const CEN_BIBLE_QUIZ_URLS = {
+  genesis:'',
+  exodus:'',
+  leviticus:'',
+  numbers:'',
+  deuteronomy:'',
+  joshua:'',
+  judges:'',
+  ruth:'',
+  '1samuel':'',
+  '2samuel':'',
+  '1kings':'',
+  '2kings':'',
+  '1chronicles':'',
+  '2chronicles':'',
+  ezra:'',
+  nehemiah:'',
+  esther:'',
+  job:'',
+  psalms:'',
+  proverbs:'',
+  ecclesiastes:'',
+  songofsongs:'',
+  isaiah:'',
+  jeremiah:'',
+  lamentations:'',
+  ezekiel:'',
+  daniel:'',
+  hosea:'',
+  joel:'',
+  amos:'',
+  obadiah:'',
+  jonah:'',
+  micah:'',
+  nahum:'',
+  habakkuk:'',
+  zephaniah:'',
+  haggai:'',
+  zechariah:'',
+  malachi:'',
+  matthew:'',
+  mark:'',
+  luke:'',
+  john:'',
+  acts:'',
+  romans:'',
+  '1corinthians':'',
+  '2corinthians':'',
+  galatians:'',
+  ephesians:'',
+  philippians:'',
+  colossians:'',
+  '1thessalonians':'',
+  '2thessalonians':'',
+  '1timothy':'',
+  '2timothy':'',
+  titus:'',
+  philemon:'',
+  hebrews:'',
+  james:'',
+  '1peter':'',
+  '2peter':'',
+  '1john':'',
+  '2john':'',
+  '3john':'',
+  jude:'',
+  revelation:''
+};
+
+function renderBibleQuizHub(){
+  const oldGrid = document.getElementById('bibleQuizOTGrid');
+  const newGrid = document.getElementById('bibleQuizNTGrid');
+  if(!oldGrid || !newGrid) return;
+
+  const makeButton = (book) => {
+    const url = (CEN_BIBLE_QUIZ_URLS[book.key] || '').trim();
+    const ready = /^https?:\/\//i.test(url);
+    const state = ready ? '퀴즈 열기' : '준비중';
+    const cls = ready ? 'ready' : 'preparing';
+    const action = ready
+      ? `openBibleQuizPwa('${book.key}', event)`
+      : `showBibleQuizPreparing('${book.name}', event)`;
+    return `<button type="button" class="bibleQuizBookBtn ${cls}" onclick="${action}" aria-label="${book.name} 성경퀴즈 ${state}">
+      <span>${book.name}</span>
+      <span class="quizState">${state}</span>
+    </button>`;
+  };
+
+  oldGrid.innerHTML = CEN_BIBLE_QUIZ_BOOKS.filter(b=>b.testament==='old').map(makeButton).join('');
+  newGrid.innerHTML = CEN_BIBLE_QUIZ_BOOKS.filter(b=>b.testament==='new').map(makeButton).join('');
+}
+
+function openBibleQuizHub(event){
+  if(event){
+    event.preventDefault?.();
+    event.stopPropagation?.();
+  }
+  try{ closeSettings(); }catch(e){}
+  try{ setMenus(false); }catch(e){}
+  document.querySelectorAll('.modal.show').forEach(el=>{
+    if(el.id!=='bibleQuizHubPanel') el.classList.remove('show');
+  });
+  renderBibleQuizHub();
+  const panel = document.getElementById('bibleQuizHubPanel');
+  if(panel){
+    panel.classList.add('show');
+    panel.style.display='flex';
+  }
+  try{ history.pushState({bibleQuizHub:true}, ""); }catch(e){}
+  return false;
+}
+
+function closeBibleQuizHub(event){
+  if(event){
+    event.preventDefault?.();
+    event.stopPropagation?.();
+  }
+  const panel = document.getElementById('bibleQuizHubPanel');
+  if(panel){
+    panel.classList.remove('show');
+    panel.style.display='none';
+  }
+  try{ setMenus(true); }catch(e){}
+}
+
+function openBibleQuizPwa(bookKey, event){
+  if(event){
+    event.preventDefault?.();
+    event.stopPropagation?.();
+  }
+  const url = (CEN_BIBLE_QUIZ_URLS[bookKey] || '').trim();
+  if(!/^https?:\/\//i.test(url)){
+    const book = CEN_BIBLE_QUIZ_BOOKS.find(b=>b.key===bookKey);
+    showBibleQuizPreparing(book ? book.name : '해당 성경', event);
+    return false;
+  }
+  /* 독립 PWA로 이동. CEN Bible 2.0 하위 폴더를 사용하지 않음. */
+  window.location.href = url;
+  return false;
+}
+
+function showBibleQuizPreparing(bookName, event){
+  if(event){
+    event.preventDefault?.();
+    event.stopPropagation?.();
+  }
+  if(typeof toast === 'function'){
+    toast(bookName + ' 성경퀴즈는 준비중입니다.');
+  }else{
+    alert(bookName + ' 성경퀴즈는 준비중입니다.');
+  }
+  return false;
+}
+
 function openBibleMapMenu(event){
   event?.stopPropagation?.();
   location.href = "https://centiger.github.io/CEN-BibleMaps/";
@@ -10830,6 +11292,23 @@ function showOverviewImagePlaceholder(img){
 })();
 </script>
 
+
+
+<script id="cen-bible-quiz-hub-back-js">
+(function(){
+  window.addEventListener('popstate', function(){
+    const panel=document.getElementById('bibleQuizHubPanel');
+    if(panel && panel.classList.contains('show')){
+      panel.classList.remove('show');
+      panel.style.display='none';
+      try{ setMenus(true); }catch(e){}
+    }
+  });
+  document.addEventListener('DOMContentLoaded', function(){
+    try{ renderBibleQuizHub(); }catch(e){}
+  });
+})();
+</script>
 
 </body>
 </html>
