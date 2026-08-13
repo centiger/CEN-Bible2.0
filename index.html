@@ -2796,6 +2796,87 @@ body.cenSearchOpen #installTip{
 </style>
 
 
+
+<style id="cen-bible-quiz-true-fullscreen">
+/* CEN Bible 2.0 - 성경퀴즈 허브 진짜 전체화면 */
+html.cenBibleQuizOpen,
+html.cenBibleQuizOpen body{
+  width:100% !important;
+  height:100% !important;
+  overflow:hidden !important;
+}
+
+body.cenBibleQuizOpen #topMenu,
+body.cenBibleQuizOpen #readerWrap,
+body.cenBibleQuizOpen #bottomTabs,
+body.cenBibleQuizOpen #selectToolbar,
+body.cenBibleQuizOpen #installTip,
+body.cenBibleQuizOpen #settingsSheet{
+  display:none !important;
+}
+
+#bibleQuizHubPanel.cenQuizTrueFullscreen{
+  position:fixed !important;
+  inset:0 !important;
+  top:0 !important;
+  right:0 !important;
+  bottom:0 !important;
+  left:0 !important;
+  width:100vw !important;
+  height:100vh !important;
+  min-width:100vw !important;
+  min-height:100vh !important;
+  max-width:none !important;
+  max-height:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  transform:none !important;
+  overflow:hidden !important;
+  display:flex !important;
+  align-items:stretch !important;
+  justify-content:stretch !important;
+  background:#fbf6ee !important;
+  z-index:2147483647 !important;
+}
+
+#bibleQuizHubPanel.cenQuizTrueFullscreen > .bibleQuizHubPanel{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  min-width:100% !important;
+  min-height:100% !important;
+  max-width:none !important;
+  max-height:none !important;
+  margin:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  overflow:hidden !important;
+}
+
+#bibleQuizHubPanel.cenQuizTrueFullscreen .bibleQuizHubScroll{
+  flex:1 1 0 !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  -webkit-overflow-scrolling:touch !important;
+  overscroll-behavior:contain !important;
+}
+
+@supports (height:100dvh){
+  #bibleQuizHubPanel.cenQuizTrueFullscreen,
+  #bibleQuizHubPanel.cenQuizTrueFullscreen > .bibleQuizHubPanel{
+    height:100dvh !important;
+    min-height:100dvh !important;
+  }
+}
+</style>
+
 <style id="cen-bible-quiz-hub-style">
 /* CEN Bible 2.0 - 성경퀴즈 독립 PWA 링크 허브 */
 #settingsSheet .bibleQuizMenuButtons{
@@ -10142,15 +10223,23 @@ function openBibleQuizHub(event){
   }
   try{ closeSettings(); }catch(e){}
   try{ setMenus(false); }catch(e){}
+
+  /* 성경퀴즈는 CEN Bible의 별도 전체화면 작업 화면으로 연다. */
+  document.documentElement.classList.add('cenBibleQuizOpen');
+  document.body.classList.add('cenBibleQuizOpen');
+
   document.querySelectorAll('.modal.show').forEach(el=>{
     if(el.id!=='bibleQuizHubPanel') el.classList.remove('show');
   });
+
   renderBibleQuizHub();
+
   const panel = document.getElementById('bibleQuizHubPanel');
   if(panel){
-    panel.classList.add('show');
+    panel.classList.add('show','cenQuizTrueFullscreen');
     panel.style.display='flex';
   }
+
   try{ history.pushState({bibleQuizHub:true}, ""); }catch(e){}
   return false;
 }
@@ -10162,9 +10251,11 @@ function closeBibleQuizHub(event){
   }
   const panel = document.getElementById('bibleQuizHubPanel');
   if(panel){
-    panel.classList.remove('show');
+    panel.classList.remove('show','cenQuizTrueFullscreen');
     panel.style.display='none';
   }
+  document.documentElement.classList.remove('cenBibleQuizOpen');
+  document.body.classList.remove('cenBibleQuizOpen');
   try{ setMenus(true); }catch(e){}
 }
 
@@ -11299,8 +11390,10 @@ function showOverviewImagePlaceholder(img){
   window.addEventListener('popstate', function(){
     const panel=document.getElementById('bibleQuizHubPanel');
     if(panel && panel.classList.contains('show')){
-      panel.classList.remove('show');
+      panel.classList.remove('show','cenQuizTrueFullscreen');
       panel.style.display='none';
+      document.documentElement.classList.remove('cenBibleQuizOpen');
+      document.body.classList.remove('cenBibleQuizOpen');
       try{ setMenus(true); }catch(e){}
     }
   });
