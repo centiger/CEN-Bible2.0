@@ -151,8 +151,6 @@ pre { white-space:pre-wrap; font-family:inherit; line-height:1.7; }
 :root[data-theme="dark"] button, :root[data-theme="dark"] select, :root[data-theme="dark"] input, :root[data-theme="dark"] textarea { background:#252019 !important; color:#eadfce !important; border-color:#4b3d2e !important; }
 :root[data-theme="dark"] .verseMemo { background:#2c241b !important; border-color:#5a4731 !important; color:#f0e4d3 !important; }
 :root[data-theme="dark"] .tab.active { background:#5b4936 !important; }
-#installTip { position:fixed; left:12px; right:12px; bottom:74px; z-index:240; display:none; background:rgba(60,45,31,.96); color:#fff; padding:10px 12px; border-radius:14px; font-size:12px; line-height:1.45; box-shadow:0 4px 18px rgba(0,0,0,.22); }
-#installTip button { width:auto; float:right; padding:2px 8px; margin-left:8px; background:transparent !important; color:#fff !important; border:1px solid rgba(255,255,255,.4) !important; }
 
 /* v13 refined UI */
 :root { --uiFont:"Nanum Gothic","Malgun Gothic",sans-serif; --bodyFont:"Nanum Myeongjo","Batang",serif; }
@@ -2725,8 +2723,7 @@ html.cenSearchOpen body{
 body.cenSearchOpen #topMenu,
 body.cenSearchOpen #readerWrap,
 body.cenSearchOpen #bottomTabs,
-body.cenSearchOpen #selectToolbar,
-body.cenSearchOpen #installTip{
+body.cenSearchOpen #selectToolbar{
   display:none !important;
 }
 #searchPanel.cenTrueFullscreen{
@@ -2810,7 +2807,6 @@ body.cenBibleQuizOpen #topMenu,
 body.cenBibleQuizOpen #readerWrap,
 body.cenBibleQuizOpen #bottomTabs,
 body.cenBibleQuizOpen #selectToolbar,
-body.cenBibleQuizOpen #installTip,
 body.cenBibleQuizOpen #settingsSheet{
   display:none !important;
 }
@@ -3057,7 +3053,6 @@ body.cenBibleQuizOpen #settingsSheet{
 
 </head>
 <body>
-<div id="installTip">홈 화면에 추가하면 주소창이 줄어들어 앱처럼 사용할 수 있습니다.<button onclick="hideInstallTip()">닫기</button></div>
 <div id="loader" class="hide"><div class="loaderBox"><div class="spinner"></div><div id="loaderText" style="margin-top:12px">센바이블 준비 중입니다...</div></div></div>
 
 <div id="topMenu" class="show">
@@ -4763,14 +4758,6 @@ function toggleThemeMode(){
   document.documentElement.setAttribute('data-theme', next);
   try { localStorage.setItem('themeModeV12', next); } catch(e) {}
 }
-function hideInstallTip(){
-  const el=document.getElementById('installTip'); if(el) el.style.display='none';
-  try { localStorage.setItem('installTipHiddenV12','1'); } catch(e) {}
-}
-function showInstallTipOnce(){
-  try { if(localStorage.getItem('installTipHiddenV12')) return; const el=document.getElementById('installTip'); if(el) setTimeout(()=>{el.style.display='block';}, 900); } catch(e) {}
-}
-setTimeout(showInstallTipOnce, 1000);
 setTimeout(()=>{
   try{
     const panel=document.querySelector('#settingsPanel .panel, #settingsPanel');
@@ -5113,7 +5100,6 @@ function openGuideFromSettings(e){
     'readingProgressV8',
     'myVersesCleanV15',
     'themeModeV12',
-    'installTipHiddenV12',
     'viewPresetV1',
     'lastBackupAtV1'
   ];
@@ -8573,7 +8559,7 @@ function resetMemoSearch(){
 (function(){
   const BACKUP_KEYS = [
     'settingsV8','slotsV8','activeSlotV8','notesV8','highlightsV8','readingProgressV8',
-    'myVersesCleanV15','themeModeV12','installTipHiddenV12','viewPresetV1','lastBackupAtV1'
+    'myVersesCleanV15','themeModeV12','viewPresetV1','lastBackupAtV1'
   ];
   const REGISTRY_KEY = 'cenBibleBackupRegistryV2';
   const DB_NAME = 'cenBibleBackupFolderDB';
