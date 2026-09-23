@@ -2876,7 +2876,8 @@ body.cenBibleQuizOpen #settingsSheet{
 <style id="cen-bible-quiz-hub-style">
 /* CEN Bible 2.0 - 성경퀴즈 독립 PWA 링크 허브 */
 #settingsSheet .bibleQuizMenuButtons{
-  grid-template-columns:1fr !important;
+  grid-template-columns:50% !important;
+  justify-content:start !important;
 }
 
 #bibleQuizHubPanel{
@@ -11213,15 +11214,13 @@ function showOverviewImagePlaceholder(img){
     return true;
   }
 
-  function showBanner(ref, returnTo, source){
+  function showBanner(ref, returnTo){
     const banner = document.getElementById("cenBridgeBanner");
     const text = document.getElementById("cenBridgeBannerText");
     const button = document.getElementById("cenBridgeReturnBtn");
     if(!banner || !text || !button) return;
 
-    const fromWestminster = String(source || "").toLowerCase() === "westminster";
-    text.textContent = ref.original + (fromWestminster ? " · 소요리문답의 성경 근거" : " · 선택한 말씀");
-    button.textContent = fromWestminster ? "소요리문답으로 돌아가기" : "이전 화면으로 돌아가기";
+    text.textContent = ref.original + " · 여정에서 선택한 말씀";
     button.style.display = returnTo ? "" : "none";
     if(returnTo) button.onclick = function(){ location.href = returnTo; };
     banner.classList.add("show");
@@ -11267,7 +11266,7 @@ function showOverviewImagePlaceholder(img){
       await new Promise(r => setTimeout(r,120));
     }
 
-    showBanner(ref, options && options.returnTo ? options.returnTo : "", options && options.source ? options.source : "");
+    showBanner(ref, options && options.returnTo ? options.returnTo : "");
     if(typeof toast === "function"){
       try{ toast(ref.original + " 말씀으로 이동했습니다."); }catch(_){}
     }
