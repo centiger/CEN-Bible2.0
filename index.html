@@ -3052,6 +3052,37 @@ body.cenBibleQuizOpen #settingsSheet{
 }
 </style>
 
+
+<style id="cen-my-bible-two-column-patch">
+/* 나만의 성경: 4개 메뉴를 2열 × 2행으로 표시 */
+#settingsSheet .myBibleBtns,
+#settingsSheet .myBibleButtons,
+#settingsSheet .myBibleMenuButtons {
+  display:grid !important;
+  grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+  gap:8px !important;
+}
+#settingsSheet .myBibleBtns > button,
+#settingsSheet .myBibleButtons > button,
+#settingsSheet .myBibleMenuButtons > button {
+  width:100% !important;
+  min-width:0 !important;
+}
+</style>
+
+<style>
+#settingsSheet .customBibleInlineRow .settingBtns,
+#settingsSheet .customBibleInlineRow > div:not(:first-child) {
+  display:grid !important;
+  grid-template-columns:repeat(2, minmax(0,1fr)) !important;
+  gap:8px !important;
+}
+#settingsSheet .customBibleInlineRow button {
+  width:100% !important;
+  min-width:0 !important;
+}
+</style>
+
 </head>
 <body>
 <div id="loader" class="hide"><div class="loaderBox"><div class="spinner"></div><div id="loaderText" style="margin-top:12px">센바이블 준비 중입니다...</div></div></div>
