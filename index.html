@@ -11122,8 +11122,8 @@ function showOverviewImagePlaceholder(img){
 </style>
 
 <div id="cenBridgeBanner">
-  <span id="cenBridgeBannerText">여정에서 선택한 말씀입니다.</span>
-  <button id="cenBridgeReturnBtn" type="button">여정으로 돌아가기</button>
+  <span id="cenBridgeBannerText">연결된 자료에서 선택한 말씀입니다.</span>
+  <button id="cenBridgeReturnBtn" type="button">돌아가기</button>
 </div>
 
 <script id="cen-bridge-script">
@@ -11213,13 +11213,15 @@ function showOverviewImagePlaceholder(img){
     return true;
   }
 
-  function showBanner(ref, returnTo){
+  function showBanner(ref, returnTo, source){
     const banner = document.getElementById("cenBridgeBanner");
     const text = document.getElementById("cenBridgeBannerText");
     const button = document.getElementById("cenBridgeReturnBtn");
     if(!banner || !text || !button) return;
 
-    text.textContent = ref.original + " · 여정에서 선택한 말씀";
+    const sourceNames = {westminster:"소요리문답", journey:"성경여정", quiz:"성경퀴즈"};
+    const sourceName = sourceNames[source] || "연결된 자료";
+    text.textContent = ref.original + " · " + sourceName + "에서 선택한 말씀";
     button.style.display = returnTo ? "" : "none";
     if(returnTo) button.onclick = function(){ location.href = returnTo; };
     banner.classList.add("show");
@@ -11265,7 +11267,7 @@ function showOverviewImagePlaceholder(img){
       await new Promise(r => setTimeout(r,120));
     }
 
-    showBanner(ref, options && options.returnTo ? options.returnTo : "");
+    showBanner(ref, options && options.returnTo ? options.returnTo : "", options && options.source ? options.source : "");
     if(typeof toast === "function"){
       try{ toast(ref.original + " 말씀으로 이동했습니다."); }catch(_){}
     }
@@ -11279,7 +11281,7 @@ function showOverviewImagePlaceholder(img){
 
   async function handleIncoming(){
     const params = new URLSearchParams(location.search);
-    const raw = params.get("ref");
+    const raw = params.get("ref") || params.get("bible");
     if(!raw) return;
     try{
       await openBibleReference(raw, {
