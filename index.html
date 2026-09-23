@@ -11122,8 +11122,8 @@ function showOverviewImagePlaceholder(img){
 </style>
 
 <div id="cenBridgeBanner">
-  <span id="cenBridgeBannerText">연결된 자료에서 선택한 말씀입니다.</span>
-  <button id="cenBridgeReturnBtn" type="button">돌아가기</button>
+  <span id="cenBridgeBannerText">여정에서 선택한 말씀입니다.</span>
+  <button id="cenBridgeReturnBtn" type="button">여정으로 돌아가기</button>
 </div>
 
 <script id="cen-bridge-script">
@@ -11219,9 +11219,9 @@ function showOverviewImagePlaceholder(img){
     const button = document.getElementById("cenBridgeReturnBtn");
     if(!banner || !text || !button) return;
 
-    const sourceNames = {westminster:"소요리문답", journey:"성경여정", quiz:"성경퀴즈"};
-    const sourceName = sourceNames[source] || "연결된 자료";
-    text.textContent = ref.original + " · " + sourceName + "에서 선택한 말씀";
+    const fromWestminster = String(source || "").toLowerCase() === "westminster";
+    text.textContent = ref.original + (fromWestminster ? " · 소요리문답의 성경 근거" : " · 선택한 말씀");
+    button.textContent = fromWestminster ? "소요리문답으로 돌아가기" : "이전 화면으로 돌아가기";
     button.style.display = returnTo ? "" : "none";
     if(returnTo) button.onclick = function(){ location.href = returnTo; };
     banner.classList.add("show");
@@ -11281,7 +11281,7 @@ function showOverviewImagePlaceholder(img){
 
   async function handleIncoming(){
     const params = new URLSearchParams(location.search);
-    const raw = params.get("ref") || params.get("bible");
+    const raw = params.get("ref");
     if(!raw) return;
     try{
       await openBibleReference(raw, {
