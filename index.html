@@ -3313,6 +3313,13 @@ onclick="toggleBibleGroup(event, 'structureFlowGroup')">
         </div>
       </div>
 
+      <div class="bibleUnderstandingGroup collapsed">
+        <button class="bibleGroupToggle" type="button" onclick="toggleBibleGroup(event, 'faithBasicsGroup')">신앙의 기초</button>
+        <div id="faithBasicsGroup" class="bibleGroupButtons">
+          <button class="menu-btn bible-understanding-btn" onclick="openWestminsterCatechism(event)">소요리문답</button>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -11387,6 +11394,14 @@ function showOverviewImagePlaceholder(img){
     try{ renderBibleQuizHub(); }catch(e){}
   });
 })();
+</script>
+
+
+<script id="cen-westminster-catechism-link-v1">
+function openWestminsterCatechism(event){
+  try { if(event){ event.preventDefault(); event.stopPropagation(); } } catch(e){}
+  window.location.href = './westminster/index.html';
+}
 </script>
 
 </body>
